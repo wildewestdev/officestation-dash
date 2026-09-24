@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Marketplace | Office Station Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1c1c;--ink-soft:#3d3d3d;--muted:#6b6b6b;--line:#e9e5df;--line-soft:#f0ede8;--bg:#f8f6f2;--bg-alt:#f1eee8;--panel:#fff;--copper:#d27c52;--copper-text:#b25f36;--copper-deep:#99502c;--copper-soft:#f7ebe4;--dark:#161616;--good:#3f7a5a;--good-soft:#e6f0ea;--bad:#a8432a;--bad-soft:#f8e7e1;--sans:"Poppins",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--r:4px;color-scheme:light}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:400 14px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+h1,h2,h3{font-weight:500;margin:0;line-height:1.25}
+.svg-i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px}
+:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+.top{background:var(--dark);color:#fff;position:sticky;top:0;z-index:20;border-bottom:2px solid var(--copper)}
+.top-in{max-width:1240px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.top a{color:#fff;text-decoration:none}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:500;font-size:16px;white-space:nowrap}
+.navl{display:flex;gap:4px;margin-left:8px}
+.navl a{padding:6px 12px;border-radius:var(--r);color:#cfccc7;font-size:13px}
+.navl a[aria-current]{background:#2b2b2b;color:#fff}
+.top-meta{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pubinfo{font-size:12px;color:#cfccc7}
+.btn{height:38px;padding:0 14px;border-radius:var(--r);border:1px solid var(--line);background:#fff;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.pri{background:var(--copper-text);border-color:var(--copper-text);color:#fff}.btn.pri:hover{background:var(--copper-deep)}
+.btn.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.ghost{background:transparent;border-color:#474747;color:#fff}.btn.ghost:hover{border-color:#aaa}
+.btn.sm{height:32px;padding:0 10px;font-size:12px}
+.btn:disabled{opacity:.55;cursor:default}
+main{max-width:1240px;margin:0 auto;padding:24px 24px 72px}
+.banner{border-radius:var(--r);padding:10px 14px;margin-bottom:16px;font-size:13px}
+.banner.err{background:var(--bad-soft);color:#7c2f1c;border:1px solid #ecc6b9}
+.banner.info{background:var(--copper-soft);color:#6e3a1f;border:1px solid #ebcdbb}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:18px;flex-wrap:wrap}
+.tabs button{border:0;background:none;padding:10px 14px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--copper)}
+.tabs .n{display:inline-block;min-width:20px;padding:0 6px;margin-left:6px;border-radius:10px;background:var(--bg-alt);font-size:11px;color:var(--ink-soft)}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.bar .grow{flex:1}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r)}
+.rows{display:grid;gap:10px}
+.row{display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 12px;background:#fff;border:1px solid var(--line);border-radius:var(--r)}
+.row .th{width:84px;height:63px;border-radius:3px;background:var(--bg-alt) center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px}
+.row h3{font-size:14px;margin-bottom:2px;overflow-wrap:anywhere}
+.row .meta{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.mkt{display:inline-flex;align-items:center;gap:4px;font-weight:600;color:var(--ink)}.mkt .svg-i{width:14px;height:14px;color:var(--copper-text)}font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:10px;background:var(--bg-alt);color:var(--ink-soft)}
+.pill.live,.pill.yes{background:var(--good-soft);color:var(--good)}
+.pill.sold{background:var(--ink);color:#fff}
+.pill.submitted,.pill.asked{background:var(--copper-soft);color:var(--copper-deep)}
+.pill.no,.pill.archived{background:var(--bad-soft);color:var(--bad)}
+.empty{padding:32px;text-align:center;color:var(--muted)}
+/* editor */
+.ed{position:fixed;inset:0;background:rgba(22,22,22,.45);z-index:40;display:flex;justify-content:flex-end}
+.ed-in{width:min(760px,100%);height:100%;background:var(--bg);overflow:auto;box-shadow:-12px 0 32px rgba(0,0,0,.15)}
+.ed-h{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid var(--line);padding:14px 20px;display:flex;gap:10px;align-items:center}
+.ed-h h2{font-size:16px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ed-b{padding:18px 20px 40px;display:grid;gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.card h3{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--copper-text);margin-bottom:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px}
+.f label{display:block;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.f input,.f select,.f textarea{width:100%;min-height:40px;border:1px solid var(--line);border-radius:var(--r);background:#fff;padding:8px 10px;font-size:14px}
+.f textarea{min-height:76px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--ink);outline:none}
+.f.full{grid-column:1/-1}
+.ph{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.ph figure{margin:0;position:relative;aspect-ratio:4/3;border:1px solid var(--line);border-radius:3px;background:var(--bg-alt) center/cover no-repeat}
+.ph figure.cover{outline:2px solid var(--copper)}
+.ph figure .b{position:absolute;bottom:4px;left:4px;right:4px;display:flex;gap:4px;justify-content:space-between}
+.ph figure button{border:0;border-radius:3px;background:rgba(22,22,22,.8);color:#fff;font-size:11px;padding:3px 7px}
+.ph figure .c{position:absolute;top:4px;left:4px;background:var(--copper-text);color:#fff;font-size:10px;padding:1px 6px;border-radius:2px;letter-spacing:.08em;text-transform:uppercase}
+.drop{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;border:1px dashed var(--ink-soft);border-radius:var(--r);padding:14px;margin-top:10px;cursor:pointer;font-weight:500;font-size:13px}
+.drop input{position:absolute;width:1px;height:1px;opacity:0}
+.preview{background:var(--bg);border:1px solid var(--line-soft);border-radius:var(--r);padding:12px 14px}
+.preview .t{font-weight:500;font-size:15px;margin-bottom:6px}
+.preview p{margin:0 0 6px;font-size:13px;color:var(--ink-soft)}
+.hint{font-size:12px;color:var(--muted);margin:6px 0 0}
+.msg{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line-soft);border-radius:var(--r);padding:10px 12px;font-size:13px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:var(--r);font-size:13px;z-index:60;max-width:calc(100% - 32px)}
+@media(max-width:720px){.top-in,main{padding-inline:16px}.row{grid-template-columns:64px minmax(0,1fr)}.row .th{width:64px;height:48px}.row .acts{grid-column:1/-1;justify-content:flex-start}.g2,.g3{grid-template-columns:1fr}.ed-b{padding:14px 14px 40px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4z"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M21 16l-5-5-9 9"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0112 2.5a7 7 0 017 7C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></symbol>
+</defs></svg>
+
+<header class="top"><div class="top-in">
+  <a class="logo" href="./"><svg viewBox="0 0 40 40" width="30" height="30" aria-hidden="true"><rect x="1" y="1" width="38" height="38" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M9 14h22M9 14v14M20 14v14M31 14v14" fill="none" stroke="#fff" stroke-width="1.6"/><rect x="9" y="25" width="22" height="3" fill="#d27c52"/></svg>Office Station</a>
+  <nav class="navl" aria-label="Dashboard"><a href="./">Dashboard</a><a href="marketplace.html" aria-current="page">Marketplace</a></nav>
+  <div class="top-meta"><span class="pubinfo" id="pubinfo"></span><button class="btn ghost sm" id="pubBtn" type="button"><svg class="svg-i"><use href="#i-up"/></svg>Publish to website</button></div>
+</div></header>
+
+<main>
+  <div class="banner err" id="err" role="alert" hidden></div>
+  <div class="banner info" id="signin" hidden>Your session has ended. <a href="./">Sign in on the dashboard</a>, then come back here.</div>
+  <div id="app" hidden>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="listings" aria-selected="true">Listings<span class="n" id="n-listings">0</span></button>
+      <button type="button" role="tab" data-tab="submissions" aria-selected="false">Seller submissions<span class="n" id="n-submissions">0</span></button>
+      <button type="button" role="tab" data-tab="sourcing" aria-selected="false">Facebook sourcing<span class="n" id="n-sourcing">0</span></button>
+    </div>
+    <section data-pane="listings">
+      <div class="bar"><select id="lf" aria-label="Filter by status" class="btn"><option value="">All statuses</option><option>live</option><option>draft</option><option>sold</option><option>archived</option></select><select id="mf" aria-label="Filter by market" class="btn"><option value="">All markets</option></select><span class="grow"></span><button class="btn pri" id="newListing" type="button"><svg class="svg-i"><use href="#i-plus"/></svg>New listing</button></div>
+      <div class="rows" id="listings"></div>
+    </section>
+    <section data-pane="submissions" hidden>
+      <p class="hint" style="margin:0 0 12px">Consignment requests from officestation.com/marketplace/sell/. Nothing here is public. Confirm terms with the seller, set the price, then set the status to <b>live</b>.</p>
+      <div class="rows" id="submissions"></div>
+    </section>
+    <section data-pane="sourcing" hidden>
+      <div class="card" style="margin-bottom:14px">
+        <h3>1 · Find listings on Facebook</h3>
+        <form id="fbFind" class="g3">
+          <div class="f"><label for="fb-market">Market</label><select id="fb-market"></select></div>
+          <div class="f"><label for="fb-q">Looking for</label><input id="fb-q" type="text" value="cubicles"></div>
+          <div class="f"><label>&nbsp;</label><button class="btn dark" type="submit"><svg class="svg-i"><use href="#i-ext"/></svg>Search Facebook Marketplace</button></div>
+        </form>
+        <p class="hint">Opens Facebook Marketplace's own search for that city in a new tab (you browse it signed in as yourself). If Facebook shows a different city, change the location in Facebook's filter. Quick picks: <span id="fbQuick"></span></p>
+      </div>
+      <div class="card" style="margin-bottom:14px">
+        <h3>2 · Add a Facebook listing to work</h3>
+        <form id="srcForm" class="g3">
+          <div class="f full"><label for="s-url">Facebook listing link</label><input id="s-url" name="fbUrl" type="url" placeholder="https://www.facebook.com/marketplace/item/…" required></div>
+          <div class="f full"><label for="s-title">What it is</label><input id="s-title" name="title" type="text" placeholder="24 Steelcase Answer 6x6 cubicles" required></div>
+          <div class="f"><label for="s-market">Market (all 45)</label><select id="s-market" name="market"></select></div>
+          <div class="f"><label for="s-area">City</label><input id="s-area" name="area" placeholder="City (optional)"></div>
+          <div class="f"><label for="s-qty">Qty</label><input id="s-qty" name="qty" type="number" min="1"></div>
+          <div class="f"><label for="s-seller">Seller name</label><input id="s-seller" name="seller" type="text"></div>
+          <div class="f full"><label for="s-notes">Notes (private)</label><input id="s-notes" name="notes" type="text" placeholder="Asking price seen, condition, move-out date"></div>
+          <div class="f full"><button class="btn dark" type="submit"><svg class="svg-i"><use href="#i-plus"/></svg>Add to sourcing list</button></div>
+        </form>
+        <p class="hint">Private to this dash; never published. "Send request" copies the consignment message and opens the listing so you can paste it into Messenger.</p>
+      </div>
+      <div class="bar"><select id="sf" aria-label="Filter by stage" class="btn"><option value="">All stages</option><option value="new">New</option><option value="asked">Asked</option><option value="yes">Said yes</option><option value="no">Said no</option></select><select id="sfm" aria-label="Filter by market" class="btn"><option value="">All markets</option></select></div>
+      <div class="rows" id="sourcing"></div>
+    </section>
+  </div>
+</main>
+
+<div class="ed" id="ed" hidden role="dialog" aria-modal="true" aria-labelledby="edTitle"><div class="ed-in">
+  <div class="ed-h"><h2 id="edTitle">Listing</h2><button class="btn sm" id="edDel" type="button">Delete</button><button class="btn pri sm" id="edSave" type="button">Save</button><button class="btn sm" id="edClose" type="button" aria-label="Close"><svg class="svg-i"><use href="#i-x"/></svg></button></div>
+  <form class="ed-b" id="edForm" autocomplete="off">
+    <div class="card"><h3>Status &amp; location</h3><div class="g2">
+      <div class="f"><label for="e-status">Status</label><select id="e-status" name="status"><option value="draft">Draft (not public)</option><option value="live">Live on website</option><option value="sold">Sold</option><option value="archived">Archived</option><option value="submitted">Submitted (review)</option></select></div>
+      <div class="f"><label for="e-source">Source</label><select id="e-source" name="source"><option value="own">Office Station stock (owned or controlled)</option><option value="partner">Partner stock: Office Station Enterprises</option><option value="consigned">Consigned (third party)</option><option value="submission">Seller submission</option></select></div>
+      <div class="f"><label for="e-market">Market (all 45)</label><select id="e-market" name="market"></select></div>
+      <div class="f"><label for="e-area">City</label><input id="e-area" name="area" placeholder="City (optional)"></div>
+    </div></div>
+    <div class="card"><h3>Photos</h3>
+      <div class="ph" id="photos"></div>
+      <label class="drop"><svg class="svg-i"><use href="#i-img"/></svg>Add photos<input type="file" id="addPhotos" accept="image/*" multiple></label>
+      <p class="hint">First photo is the cover. Photos are resized to 1600px and stripped of location data before upload.</p>
+    </div>
+    <div class="card"><h3>What it is</h3><div class="g3">
+      <div class="f"><label for="e-category">Category</label><select id="e-category" name="category"></select></div>
+      <div class="f"><label for="e-qty">Quantity</label><input id="e-qty" name="qty" type="number" min="1"></div>
+      <div class="f"><label for="e-condition">Condition</label><select id="e-condition" name="condition"><option value="">Not graded</option><option value="A">Grade A</option><option value="B">Grade B</option><option value="C">Grade C</option></select></div>
+      <div class="f"><label for="e-brand">Manufacturer</label><input id="e-brand" name="brand" list="brands"></div>
+      <div class="f"><label for="e-series">Model / series</label><input id="e-series" name="series" placeholder="Answer, AO2, Kick…"></div>
+      <div class="f"><label for="e-size">Size</label><input id="e-size" name="size" placeholder="6x6"></div>
+      <div class="f"><label for="e-panelHeight">Panel height (in)</label><input id="e-panelHeight" name="panelHeight" type="number" min="10" max="96"></div>
+      <div class="f"><label for="e-panelFinish">Panel finish</label><input id="e-panelFinish" name="panelFinish" placeholder="Gray fabric"></div>
+      <div class="f"><label for="e-worksurface">Worksurface</label><input id="e-worksurface" name="worksurface" placeholder="Maple laminate"></div>
+      <div class="f"><label for="e-storage">Storage</label><input id="e-storage" name="storage" placeholder="Box/box/file pedestal per station"></div>
+      <div class="f"><label for="e-power">Power</label><select id="e-power" name="power"><option value="">Not stated</option><option value="yes">Powered</option><option value="no">Non-powered</option></select></div>
+      <div class="f full"><label for="e-features">Extra details (our words, shown on the site)</label><textarea id="e-features" name="features" placeholder="Glass stackers on the aisle side, keyboard trays included"></textarea></div>
+    </div>
+    <datalist id="brands"><option>Herman Miller</option><option>Steelcase</option><option>Haworth</option><option>Knoll</option><option>Humanscale</option><option>AIS</option><option>Friant</option><option>Kimball</option><option>Teknion</option><option>Allsteel</option><option>HON</option></datalist></div>
+    <div class="card"><h3>Price</h3><div class="g3">
+      <div class="f"><label for="e-price">Asking price ($)</label><input id="e-price" name="price" type="number" min="0" step="1" placeholder="Blank = Request pricing"></div>
+      <div class="f"><label for="e-priceUnit">Per</label><select id="e-priceUnit" name="priceUnit"><option value="set">For the set</option><option value="each">Each</option></select></div>
+    </div><p class="hint">Office Station sets the price. Only priced listings go to Google Shopping.</p></div>
+    <div class="card"><h3>Preview (as it reads on the site)</h3><div class="preview" id="preview"></div></div>
+    <div class="card"><h3>Owner permission</h3>
+      <label class="consent"><input type="checkbox" id="e-photoConsent"> <span><b>Owner approved photo use</b> — the seller said yes in writing to consignment and to us using their photos (sent to us, or "OK to use my Facebook photos"). Required before a third-party consigned listing can go live. Not needed for Office Station or partner stock.</span></label>
+      <p class="hint" id="consentWhen"></p>
+    </div>
+    <div class="card"><h3>Private (never published)</h3><div class="g2">
+      <div class="f"><label for="e-seller">Seller / owner</label><input id="e-seller" name="seller"></div>
+      <div class="f"><label for="e-sellerEmail">Seller email</label><input id="e-sellerEmail" name="sellerEmail" type="email"></div>
+      <div class="f"><label for="e-sellerPhone">Seller phone</label><input id="e-sellerPhone" name="sellerPhone"></div>
+      <div class="f"><label for="e-availableBy">Must be gone by</label><input id="e-availableBy" name="availableBy" type="date"></div>
+      <div class="f full"><label for="e-fbUrl">Facebook listing link</label><input id="e-fbUrl" name="fbUrl" type="url"></div>
+      <div class="f full"><label for="e-notes">Notes</label><textarea id="e-notes" name="notes"></textarea></div>
+    </div></div>
+  </form>
+</div></div>
+
+<script type="module">
+import { MARKETS, GROUPS, HOME_MARKET, CATEGORIES, title, describe, priceLine, outreachMessage, consentMessage } from "./model.mjs";
+
+const API = "https://officestation.netlify.app/.netlify/functions/marketplace";
+const TOKEN = (() => { try { return localStorage.getItem("osDashToken"); } catch { return null; } })();
+const $ = (id) => document.getElementById(id);
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const state = { records: [], meta: {}, tab: "listings", cur: null };
+const marketOpts = GROUPS.map((g) => `<optgroup label="${g}">` + Object.entries(MARKETS).filter(([, m]) => m.group === g).map(([s, m]) => `<option value="${s}">${m.name}</option>`).join("") + "</optgroup>").join("");
+
+let toastTimer;
+function toast(msg) {
+  let t = document.querySelector(".toast");
+  if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+  t.textContent = msg; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 3600);
+}
+function fail(msg) { $("err").textContent = msg; $("err").hidden = false; }
+async function api(body) {
+  const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...body, token: TOKEN }) });
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401) { $("app").hidden = true; $("signin").hidden = false; throw new Error("signed out"); }
+  if (!r.ok) throw new Error(j.error || "Request failed (" + r.status + ")");
+  return j;
+}
+const imgUrl = (k) => `${API}?img=${encodeURIComponent(k)}&t=${encodeURIComponent(TOKEN)}`;
+const fmtDate = (s) => { if (!s) return ""; const d = new Date(s); return isNaN(d) ? "" : d.toLocaleDateString("en-US", { month: "short", day: "numeric" }); };
+
+function shrink(file, edge = 1600, q = 0.85) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), im = new Image();
+    im.onload = () => { const s = Math.min(1, edge / Math.max(im.naturalWidth, im.naturalHeight)); const c = document.createElement("canvas"); c.width = Math.round(im.naturalWidth * s); c.height = Math.round(im.naturalHeight * s); const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url); resolve(c.toDataURL("image/jpeg", q)); };
+    im.onerror = () => { URL.revokeObjectURL(url); reject(new Error("unreadable image")); };
+    im.src = url;
+  });
+}
+
+// ---------------------------------------------------------------- load + render
+async function load() {
+  try {
+    const j = await api({ action: "list" });
+    state.records = j.records || []; state.meta = j.meta || {};
+    $("app").hidden = false; render();
+  } catch (e) { if (e.message !== "signed out") fail(e.message); }
+}
+function pubInfo() {
+  const m = state.meta || {};
+  $("pubinfo").textContent = m.dirtyAt ? "Changes waiting: website updates within 5 minutes" : m.publishedAt ? "Website up to date · published " + fmtDate(m.publishedAt) : "";
+}
+const listingsOf = () => state.records.filter((r) => r.kind === "listing" && r.status !== "submitted");
+const subsOf = () => state.records.filter((r) => r.kind === "listing" && r.status === "submitted");
+const prosOf = () => state.records.filter((r) => r.kind === "prospect");
+
+// "Phoenix, AZ" (names that already carry their state, like "Washington, D.C.", are left alone)
+function mktName(slug) { const m = MARKETS[slug] || MARKETS[HOME_MARKET]; return m.name.includes(",") || m.name.includes(m.state) ? m.name : `${m.name}, ${m.state}`; }
+// market filter lists only markets that have listings, with counts; keeps the current choice
+function fillMarketFilter() {
+  const sel = $("mf"), keep = sel.value, counts = {};
+  for (const r of listingsOf()) { const k = r.market || HOME_MARKET; counts[k] = (counts[k] || 0) + 1; }
+  const opts = Object.keys(counts).sort((a, b) => mktName(a).localeCompare(mktName(b)));
+  sel.innerHTML = `<option value="">All markets (${listingsOf().length})</option>` + opts.map((k) => `<option value="${esc(k)}">${esc(mktName(k))} (${counts[k]})</option>`).join("");
+  sel.value = counts[keep] ? keep : "";
+}
+function listingRow(r) {
+  const t = title(r) || "Untitled listing";
+  const th = r.photos && r.photos[0] ? `style="background-image:url('${imgUrl(r.photos[0])}')"` : "";
+  return `<div class="row"><div class="th" ${th}>${th ? "" : "No photo"}</div>
+    <div><h3>${esc(t)}</h3><div class="meta"><span class="mkt"><svg class="svg-i"><use href="#i-pin"/></svg>${esc(mktName(r.market))}</span><span class="pill ${esc(r.status)}">${esc(r.status)}</span><span>${esc(priceLine(r) || "Request pricing")}</span><span>${esc(r.source || "")}</span><span>${(r.photos || []).length} photo(s)</span><span>Updated ${esc(fmtDate(r.updated))}</span>${r.status === "live" ? `<a href="https://officestation.com/marketplace/${esc(r.market || HOME_MARKET)}/" target="_blank" rel="noopener">On site <svg class="svg-i"><use href="#i-ext"/></svg></a>` : ""}</div></div>
+    <div class="acts"><button class="btn sm" data-edit="${esc(r.id)}">Edit</button></div></div>`;
+}
+function prospectRow(r) {
+  const st = r.stage || "new";
+  return `<div class="row"><div class="th">FB</div>
+    <div><h3>${esc(r.title || "Facebook listing")}</h3><div class="meta"><span class="pill ${esc(st)}">${esc({ new: "New", asked: "Asked", yes: "Said yes", no: "Said no" }[st] || st)}</span><span>${esc([r.area, (MARKETS[r.market] || {}).name].filter(Boolean).join(", "))}</span>${r.qty ? `<span>Qty ${esc(r.qty)}</span>` : ""}${r.seller ? `<span>${esc(r.seller)}</span>` : ""}${r.asked ? `<span>Asked ${esc(fmtDate(r.asked))}</span>` : ""}${r.fbUrl ? `<a href="${esc(r.fbUrl)}" target="_blank" rel="noopener">Open on Facebook <svg class="svg-i"><use href="#i-ext"/></svg></a>` : ""}</div>${r.notes ? `<div class="meta" style="margin-top:3px">${esc(r.notes)}</div>` : ""}</div>
+    <div class="acts">${st !== "yes" ? `<button class="btn dark sm" data-ask="${esc(r.id)}"><svg class="svg-i"><use href="#i-send"/></svg>Send request</button>` : ""}${st === "asked" || st === "new" ? `<button class="btn sm" data-yes="${esc(r.id)}">Said yes</button><button class="btn sm" data-no="${esc(r.id)}">Said no</button>` : ""}${st === "yes" ? `<button class="btn dark sm" data-consent="${esc(r.id)}"><svg class="svg-i"><use href="#i-send"/></svg>Copy photo-permission message</button>` : ""}${r.listing ? `<button class="btn sm" data-edit="${esc(r.listing)}">Open listing</button>` : ""}<button class="btn sm" data-del="${esc(r.id)}" aria-label="Remove">Remove</button></div></div>`;
+}
+function render() {
+  pubInfo();
+  $("n-listings").textContent = listingsOf().length; $("n-submissions").textContent = subsOf().length; $("n-sourcing").textContent = prosOf().filter((r) => (r.stage || "new") !== "no").length;
+  fillMarketFilter(); fillSourcingFilter();
+  const lf = $("lf").value, sf = $("sf").value, mf = $("mf").value;
+  const L = listingsOf().filter((r) => (!lf || r.status === lf) && (!mf || (r.market || HOME_MARKET) === mf)), S = subsOf(), P = prosOf().filter((r) => (!sf || (r.stage || "new") === sf) && (!$("sfm").value || (r.market || HOME_MARKET) === $("sfm").value));
+  $("listings").innerHTML = L.length ? L.map(listingRow).join("") : `<div class="panel empty">No listings yet. Add your current Facebook listings with <b>New listing</b>.</div>`;
+  $("submissions").innerHTML = S.length ? S.map(listingRow).join("") : `<div class="panel empty">No seller submissions waiting.</div>`;
+  $("sourcing").innerHTML = P.length ? P.map(prospectRow).join("") : `<div class="panel empty">Nothing on the sourcing list yet.</div>`;
+}
+
+// ---------------------------------------------------------------- tabs + filters
+document.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => {
+  state.tab = b.dataset.tab;
+  document.querySelectorAll("[data-tab]").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+  document.querySelectorAll("[data-pane]").forEach((p) => { p.hidden = p.dataset.pane !== state.tab; });
+}));
+$("lf").addEventListener("change", render); $("sf").addEventListener("change", render); $("mf").addEventListener("change", render);
+
+// ---------------------------------------------------------------- editor
+const fill = (sel, opts) => { sel.innerHTML = opts.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join(""); };
+const pickOpt = `<option value="">Choose a market…</option>`;
+$("e-market").innerHTML = pickOpt + marketOpts; $("s-market").innerHTML = pickOpt + marketOpts;
+// A city that belongs to a different market (e.g. City "Detroit" with Market "Phoenix") -> that market's slug
+const norm = (s) => String(s || "").toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
+const CITY_MARKET = {};
+for (const [slug, m] of Object.entries(MARKETS)) {
+  for (const part of m.name.split(/-|,/)) { const k = norm(part); if (k.length > 3 && !/^(northern|greater)$/.test(k)) CITY_MARKET[k] = slug; }
+  CITY_MARKET[norm(m.name)] = slug;
+  for (const a of m.areas) CITY_MARKET[norm(a)] = slug;
+}
+const cityMarket = (city) => CITY_MARKET[norm(city)] || null;
+// the market to save with, or null to stop the save
+function checkMarket(market, city, sel) {
+  if (!MARKETS[market]) { toast("Choose the listing's market first."); sel.focus(); return null; }
+  const other = cityMarket(city);
+  if (other && other !== market && confirm(`City says "${city}", which is in ${mktName(other)}, but Market is set to ${mktName(market)}.\n\nOK = switch Market to ${mktName(other)}\nCancel = keep ${mktName(market)}`)) { sel.value = other; return other; }
+  return market;
+}
+
+// ---------------------------------------------------------------- Facebook sourcing helpers
+// Facebook Marketplace city pages: facebook.com/marketplace/<city>/search?query=... (a person browses them;
+// nothing here fetches Facebook). Slugs Facebook uses that differ from our market names:
+const FB_CITY = { "los-angeles-ca": "la", "new-york-ny": "nyc", "northern-california": "sanfrancisco", "orange-county-ca": "irvine", "dallas-fort-worth-tx": "dallas", "minneapolis-mn": "minneapolis", "washington-dc": "dc", "raleigh-durham-nc": "raleigh", "northern-new-jersey": "newark", "st-louis-mo": "stlouis" };
+const fbCity = (slug) => FB_CITY[slug] || (MARKETS[slug] ? MARKETS[slug].name.toLowerCase().replace(/[^a-z]/g, "") : "phoenix");
+const fbUrl = (slug, q) => `https://www.facebook.com/marketplace/${fbCity(slug)}/search/?query=${encodeURIComponent(q || "cubicles")}&exact=false`;
+$("fb-market").innerHTML = marketOpts; $("fb-market").value = HOME_MARKET;
+$("fbFind").addEventListener("submit", (e) => { e.preventDefault(); window.open(fbUrl($("fb-market").value, $("fb-q").value.trim()), "_blank", "noopener"); });
+$("fbQuick").innerHTML = ["cubicles", "office workstations", "office chairs", "herman miller", "steelcase", "office furniture"].map((q) => `<a href="#" data-fbq="${esc(q)}">${esc(q)}</a>`).join(" · ");
+$("fbQuick").addEventListener("click", (e) => { const a = e.target.closest("[data-fbq]"); if (!a) return; e.preventDefault(); $("fb-q").value = a.dataset.fbq; window.open(fbUrl($("fb-market").value, a.dataset.fbq), "_blank", "noopener"); });
+// sourcing list: market filter shows only markets you have prospects in, with counts
+function fillSourcingFilter() {
+  const sel = $("sfm"), keep = sel.value, counts = {};
+  for (const r of prosOf()) { const k = r.market || HOME_MARKET; counts[k] = (counts[k] || 0) + 1; }
+  sel.innerHTML = `<option value="">All markets (${prosOf().length})</option>` + Object.keys(counts).sort((a, b) => mktName(a).localeCompare(mktName(b))).map((k) => `<option value="${esc(k)}">${esc(mktName(k))} (${counts[k]})</option>`).join("");
+  sel.value = counts[keep] ? keep : "";
+}
+$("sfm").addEventListener("change", () => render());
+
+fill($("e-category"), Object.entries(CATEGORIES).map(([k, v]) => [k, v.label]));
+const FIELDS = ["status", "source", "market", "area", "category", "qty", "condition", "brand", "series", "size", "panelHeight", "panelFinish", "worksurface", "storage", "power", "features", "price", "priceUnit", "seller", "sellerEmail", "sellerPhone", "availableBy", "fbUrl", "notes"];
+function formData() { const o = {}; for (const k of FIELDS) o[k] = $("e-" + k).value; o.photoConsent = $("e-photoConsent").checked ? "yes" : ""; return o; }
+function preview() {
+  const r = { ...(state.cur || {}), ...formData(), id: (state.cur && state.cur.id) || "preview" };
+  $("preview").innerHTML = `<div class="t">${esc(title(r) || "Fill in the details")}</div><p><b>${esc(priceLine(r) || "Request pricing")}</b></p>${describe(r).map((s) => `<p>${esc(s)}</p>`).join("")}`;
+  $("edTitle").textContent = title(r) || "New listing";
+}
+function drawPhotos() {
+  const r = state.cur || {};
+  $("photos").innerHTML = (r.photos || []).map((k, i) => `<figure class="${i ? "" : "cover"}" style="background-image:url('${imgUrl(k)}')">${i ? "" : '<span class="c">Cover</span>'}<div class="b">${i ? `<button type="button" data-cover="${esc(k)}">Make cover</button>` : "<span></span>"}<button type="button" data-pdel="${esc(k)}">Remove</button></div></figure>`).join("");
+}
+function openEditor(rec) {
+  // new listings start with NO market so it must be chosen (a default of Phoenix put a Detroit listing in Phoenix, 9/24)
+  state.cur = rec ? { ...rec } : { kind: "listing", status: "draft", source: "own", market: "", area: "", category: "cubicles", priceUnit: "set", photos: [] };
+  for (const k of FIELDS) $("e-" + k).value = state.cur[k] == null ? "" : state.cur[k];
+  $("e-photoConsent").checked = state.cur.photoConsent === "yes";
+  $("consentWhen").textContent = state.cur.consentAt ? "Recorded " + new Date(state.cur.consentAt).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) + (state.cur.source === "submission" ? " (seller ticked consent on the website form)" : "") : "";
+  if (!state.cur.priceUnit) $("e-priceUnit").value = "set";
+  $("edDel").hidden = !state.cur.id;
+  drawPhotos(); preview();
+  $("ed").hidden = false; document.body.style.overflow = "hidden";
+}
+function closeEditor() { $("ed").hidden = true; document.body.style.overflow = ""; state.cur = null; }
+$("edForm").addEventListener("input", preview);
+$("edClose").addEventListener("click", closeEditor);
+$("ed").addEventListener("click", (e) => { if (e.target === $("ed")) closeEditor(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("ed").hidden) closeEditor(); });
+$("newListing").addEventListener("click", () => openEditor(null));
+
+async function saveCur(quiet, forPhotos) {
+  const rec = { ...formData(), kind: "listing" };
+  if (state.cur.id) rec.id = state.cur.id;
+  const mk = checkMarket(rec.market, rec.area, $("e-market"));
+  if (!mk) return false;
+  rec.market = mk;
+  if (!forPhotos && rec.status === "live" && !(state.cur.photos || []).length && !confirm("This listing has no photos. Publish it anyway?")) return false;
+  const j = await api({ action: "save", record: rec });
+  state.cur = { ...j.record };
+  const i = state.records.findIndex((r) => r.id === j.record.id);
+  if (i >= 0) state.records[i] = j.record; else state.records.unshift(j.record);
+  if (j.record.status === "live" || j.record.status === "sold") state.meta.dirtyAt = new Date().toISOString();
+  $("edDel").hidden = false; drawPhotos(); render();
+  if (!quiet) toast(j.record.status === "live" ? "Saved. It goes live on officestation.com within 5 minutes." : "Saved.");
+  return true;
+}
+$("edSave").addEventListener("click", async () => { $("edSave").disabled = true; try { await saveCur(false); } catch (e) { toast(e.message); } finally { $("edSave").disabled = false; } });
+$("edDel").addEventListener("click", async () => {
+  if (!state.cur.id || !confirm("Delete this listing and its photos? This can't be undone.")) return;
+  try { await api({ action: "delete", id: state.cur.id }); state.records = state.records.filter((r) => r.id !== state.cur.id); closeEditor(); render(); toast("Deleted."); } catch (e) { toast(e.message); }
+});
+$("addPhotos").addEventListener("change", async (e) => {
+  const files = [...e.target.files]; e.target.value = "";
+  if (!files.length || !state.cur) return;
+  // a brand-new listing is saved (as whatever status is selected) so the photos have somewhere to go
+  if (!state.cur.id) { try { toast("Saving listing…"); if (!(await saveCur(true, true))) return; } catch (err) { toast(err.message); return; } }
+  for (const [i, f] of files.entries()) {
+    toast(`Uploading photo ${i + 1} of ${files.length}…`);
+    try { const j = await api({ action: "photo", id: state.cur.id, data: await shrink(f) }); state.cur.photos = j.record.photos; drawPhotos(); const k = state.records.findIndex((r) => r.id === j.record.id); if (k >= 0) state.records[k] = j.record; }
+    catch (err) { toast(err.message); break; }
+  }
+  render();
+});
+$("photos").addEventListener("click", async (e) => {
+  const del = e.target.closest("[data-pdel]"), cov = e.target.closest("[data-cover]");
+  if (!del && !cov) return;
+  try {
+    const j = await api(del ? { action: "photo-del", id: state.cur.id, key: del.dataset.pdel } : { action: "photo-cover", id: state.cur.id, key: cov.dataset.cover });
+    state.cur.photos = j.record.photos; drawPhotos();
+    const k = state.records.findIndex((r) => r.id === j.record.id); if (k >= 0) state.records[k] = j.record; render();
+  } catch (err) { toast(err.message); }
+});
+
+// ---------------------------------------------------------------- lists: edit + sourcing actions
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-edit],[data-ask],[data-yes],[data-no],[data-del],[data-consent]");
+  if (!b || b.closest("#ed")) return;
+  const find = (id) => state.records.find((r) => r.id === id);
+  const upd = async (rec) => { const j = await api({ action: "save", record: rec }); const i = state.records.findIndex((r) => r.id === j.record.id); if (i >= 0) state.records[i] = j.record; else state.records.unshift(j.record); render(); return j.record; };
+  try {
+    if (b.dataset.edit) { const r = find(b.dataset.edit); if (r) openEditor(r); return; }
+    if (b.dataset.ask) {
+      const r = find(b.dataset.ask), msg = outreachMessage(r);
+      let copied = false; try { await navigator.clipboard.writeText(msg); copied = true; } catch {}
+      if (r.fbUrl) window.open(r.fbUrl, "_blank", "noopener");
+      await upd({ id: r.id, stage: "asked", asked: new Date().toISOString() });
+      if (copied) toast("Message copied. Paste it into Messenger on the listing."); else prompt("Copy this message:", msg);
+      return;
+    }
+    if (b.dataset.yes) {
+      const r = find(b.dataset.yes);
+      const j = await api({ action: "save", record: { kind: "listing", status: "draft", source: "consigned", market: r.market || HOME_MARKET, area: r.area, qty: r.qty, seller: r.seller, fbUrl: r.fbUrl, notes: `From Facebook sourcing: ${r.title || ""}${r.notes ? "\n" + r.notes : ""}\nGet the seller's OK on photos before publishing.` } });
+      state.records.unshift(j.record);
+      await upd({ id: r.id, stage: "yes", listing: j.record.id });
+      openEditor(j.record); toast("Draft listing created. Next: \"Copy photo-permission message\" on the sourcing row, then add their photos.");
+      return;
+    }
+    if (b.dataset.no) { await upd({ id: b.dataset.no, stage: "no" }); return; }
+    if (b.dataset.consent) {
+      const r = find(b.dataset.consent), msg = consentMessage(r);
+      let copied = false; try { await navigator.clipboard.writeText(msg); copied = true; } catch {}
+      if (r.fbUrl) window.open(r.fbUrl, "_blank", "noopener");
+      if (copied) toast("Photo-permission message copied. Paste it into the same Messenger thread."); else prompt("Copy this message:", msg);
+      return;
+    }
+    if (b.dataset.del) { if (!confirm("Remove this from the sourcing list?")) return; await api({ action: "delete", id: b.dataset.del }); state.records = state.records.filter((r) => r.id !== b.dataset.del); render(); }
+  } catch (err) { toast(err.message); }
+});
+$("srcForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = new FormData(e.target), rec = { kind: "prospect" };
+  f.forEach((v, k) => { rec[k] = v; });
+  if (!/^https:\/\/(www\.|m\.)?facebook\.com\//i.test(rec.fbUrl)) { toast("Paste the full facebook.com listing link."); return; }
+  const mk = checkMarket(rec.market, rec.area, $("s-market"));
+  if (!mk) return;
+  rec.market = mk;
+  try { const j = await api({ action: "save", record: rec }); state.records.unshift(j.record); e.target.reset(); render(); toast("Added to the sourcing list."); } catch (err) { toast(err.message); }
+});
+$("pubBtn").addEventListener("click", async () => {
+  $("pubBtn").disabled = true;
+  try { const j = await api({ action: "publish" }); state.meta = j.meta || state.meta; pubInfo(); toast("Queued. officestation.com updates within 5 minutes."); } catch (e) { toast(e.message); } finally { $("pubBtn").disabled = false; }
+});
+
+if (!TOKEN) { $("signin").hidden = false; } else load();
+</script>
+</body>
+</html>

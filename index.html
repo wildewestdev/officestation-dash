@@ -1,0 +1,1190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Office Station Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1c1c1c; --ink-soft:#3d3d3d; --muted:#6f6f6f; --faint:#a3a09b;
+  --line:#e9e5df; --line-soft:#f0ede8;
+  --bg:#f8f6f2; --bg-alt:#f1eee8; --panel:#ffffff;
+  --copper:#d27c52; --copper-text:#b25f36; --copper-deep:#99502c; --copper-soft:#f7ebe4;
+  --dark:#161616;
+  --good:#3f7a5a; --good-soft:#e6f0ea; --bad:#a8432a; --bad-soft:#f8e7e1;
+  --sans:"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --radius:4px;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;font-weight:400;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+[hidden]{display:none!important}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--sans);color:var(--ink);font-weight:500;line-height:1.2;margin:0;letter-spacing:-.01em}
+.svg-i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px}
+:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+.kick{display:block;font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-text)}
+
+/* ---------- logo ---------- */
+.logo{display:inline-flex;align-items:center;gap:10px;line-height:1}
+.logo svg{display:block;flex:none}
+.logo .lt{font-weight:500;font-size:17px;letter-spacing:.02em;white-space:nowrap}
+
+/* ---------- sign in ---------- */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding-block:40px;padding-inline:16px;background:linear-gradient(180deg,var(--dark) 0,var(--dark) 38%,var(--bg) 38%)}
+.login-card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--copper);border-radius:var(--radius);padding:32px 28px 28px;box-shadow:0 12px 32px rgba(22,22,22,.10)}
+.login-card .logo{color:var(--ink)}
+.login-card h1{font-size:24px;margin:22px 0 4px}
+.login-card .lede{color:var(--muted);margin:0 0 22px;font-size:13px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;height:44px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:0 12px;font-size:15px}
+.field input:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 3px rgba(210,124,82,.18)}
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:84px}
+.pw-toggle{position:absolute;right:6px;top:6px;height:32px;padding:0 10px;border:0;background:transparent;color:var(--muted);font-size:11px;font-weight:500;letter-spacing:.12em;display:inline-flex;align-items:center;gap:5px;border-radius:var(--radius)}
+.pw-toggle:hover{background:var(--bg-alt);color:var(--ink)}
+/* copper button: the darker copper keeps white label text above 4.5:1 contrast */
+.btn-primary{width:100%;height:46px;border:0;border-radius:var(--radius);background:var(--copper-text);color:#fff;font-weight:500;letter-spacing:.06em}
+.btn-primary:hover{background:var(--copper-deep)}
+.btn-primary:disabled{opacity:.65;cursor:default}
+.login-err{min-height:20px;margin:0 0 12px;color:var(--bad);font-size:13px}
+.login-foot{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
+
+/* ---------- header ---------- */
+.top{background:var(--dark);color:#fff;position:sticky;top:0;z-index:20;border-bottom:2px solid var(--copper)}
+.top-in{max-width:1240px;margin:0 auto;padding-block:12px;padding-inline:24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;color:#fff}
+.brand .ttl{font-size:14px;font-weight:300;color:#bdbab5;white-space:nowrap;padding-left:12px;border-left:1px solid #3a3a3a}
+.top-meta{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.upd{font-size:12px;color:#bdbab5;white-space:nowrap}
+.badge{display:inline-block;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid var(--copper);color:#e9b89e}
+.btn-ghost{height:34px;padding:0 12px;border:1px solid #474747;border-radius:var(--radius);background:transparent;color:#fff;font-size:13px;font-weight:400;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-ghost:hover{background:rgba(255,255,255,.06);border-color:#8a8a8a}
+.btn-ghost:disabled{opacity:.6;cursor:default}
+.spin{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- layout ---------- */
+main{max-width:1240px;margin:0 auto;padding-block:26px 64px;padding-inline:24px}
+.banner{background:var(--bad-soft);border:1px solid #ecc6b9;color:#7c2f1c;border-radius:var(--radius);padding:10px 14px;margin-bottom:18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.banner button{border:1px solid #d9a592;background:#fff;color:#7c2f1c;border-radius:var(--radius);padding:3px 10px;font-size:12px}
+.banner.warn{background:var(--copper-soft);border-color:#ebcdbb;color:#6e3a1f;align-items:flex-start}
+.banner.warn .svg-i{margin-top:3px;color:var(--copper-text)}
+.banner ul{margin:2px 0 0;padding-left:18px;font-size:13px}
+.banner b{font-weight:500}
+.loading{padding:60px 0;text-align:center;color:var(--muted)}
+.part{margin-bottom:40px}
+.part-h{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.part-h .no{font-size:12px;font-weight:500;color:var(--copper-text);letter-spacing:.1em}
+.part-h h2{font-size:24px;font-weight:500}
+.part-h .aside{margin-left:auto;color:var(--muted);font-size:12px;text-align:right}
+.sec{margin-bottom:22px}
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.sec-h h3{font-size:17px;font-weight:500}
+.sec-h .aside{color:var(--muted);font-size:12px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+.dim{opacity:.55;transition:opacity .2s}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.two.wide-r{grid-template-columns:2fr 3fr}
+.card{padding:16px 18px;min-width:0}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.card-h h3{font-size:15px;font-weight:500}
+.card-h .aside{font-size:12px;color:var(--muted)}
+
+/* ---------- status ---------- */
+.status{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.st{padding:16px;display:flex;gap:12px;align-items:flex-start;border-right:1px solid var(--line-soft);min-width:0}
+.st:last-child{border-right:0}
+.st .ic{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+.st.ok .ic{background:var(--good-soft);color:var(--good)}
+.st.wait .ic{background:var(--copper-soft);color:var(--copper-text)}
+.st.off .ic{background:var(--bg-alt);color:var(--muted)}
+.st .lab{font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.st .val{font-weight:500;color:var(--ink);font-size:14px;line-height:1.4;margin-top:2px}
+.st.off .val{color:var(--ink-soft)}
+.st .note{font-size:12px;color:var(--muted);line-height:1.45;margin-top:3px;overflow-wrap:anywhere}
+
+/* ---------- KPI tiles ---------- */
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.kpis.k4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.kpi{padding:14px 16px 13px;border-top:2px solid var(--ink);min-width:0}
+.kpi.site{border-top-color:var(--copper)}
+.kpi.bing{border-top-color:var(--faint)}
+.kpi .lab{font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.kpi .num{font-size:30px;font-weight:500;color:var(--ink);line-height:1.1;margin:8px 0 4px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi .num.none{color:#c4c0ba}
+.kpi .dl{font-size:12px;color:var(--muted);min-height:18px}
+.up{color:var(--good);font-weight:500;white-space:nowrap}
+.down{color:var(--bad);font-weight:500;white-space:nowrap}
+.flat{color:var(--muted);white-space:nowrap}
+.newb{color:var(--copper-text);font-weight:500;white-space:nowrap}
+.tri{width:9px;height:9px;vertical-align:0;margin-right:3px;fill:currentColor}
+
+/* ---------- bar lists ---------- */
+.bars{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.bars.cols{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+.bars li{min-width:0}
+.bl{display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-size:13px}
+.bn{min-width:0;overflow-wrap:anywhere;color:var(--ink)}
+.bv{font-variant-numeric:tabular-nums;font-weight:500;white-space:nowrap}
+.bv small{font-weight:400;color:var(--muted);font-size:11px;margin-left:6px}
+.bt{height:4px;background:var(--line-soft);border-radius:2px;margin-top:5px;overflow:hidden}
+.bt i{display:block;height:100%;background:var(--copper);border-radius:2px}
+.bars.ink .bt i{background:var(--ink)}
+.bars li.zero .bn,.bars li.zero .bv{color:var(--faint)}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line-soft);white-space:nowrap;vertical-align:middle}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:10.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--line)}
+thead th.sub{font-weight:400;color:var(--faint)}
+tbody tr:hover td{background:#fcfbf9}
+td.q{white-space:normal;min-width:220px;max-width:460px;overflow-wrap:anywhere;color:var(--ink)}
+.sortb{border:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;padding:0;display:inline-flex;align-items:center;gap:4px}
+.sortb .ar{opacity:.45;font-size:9px}
+.sortb.on{color:var(--ink)}
+.sortb.on .ar{opacity:1;color:var(--copper-text)}
+.muted{color:var(--muted)}
+.ns{color:var(--muted);font-style:italic;text-align:left}
+tr.grp th{background:#fff;color:var(--ink);font-size:13px;font-weight:500;text-transform:none;letter-spacing:0;text-align:left;padding:12px 12px 6px;border-bottom:1px solid var(--line)}
+.exp{border:0;background:transparent;padding:0;text-align:left;display:flex;gap:8px;align-items:flex-start;color:var(--ink);width:100%}
+.exp .chev{margin-top:3px;color:var(--faint);transition:transform .15s}
+.exp[aria-expanded="true"] .chev{transform:rotate(90deg);color:var(--copper-text)}
+.exp:hover .qt{text-decoration:underline;text-decoration-color:var(--copper);text-underline-offset:3px}
+.pos{font-weight:500;color:var(--ink)}
+.best{display:block;font-size:11px;color:var(--muted);font-weight:400}
+tr.detail td{background:#fcfbf9;padding:4px 12px 14px 36px;white-space:normal;text-align:left}
+.mlist{list-style:none;margin:0;padding:0;display:grid;gap:4px;position:sticky;left:14px;max-width:calc(100vw - 72px)}
+.mlist li{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:13px}
+.eng{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:1px 6px;border-radius:2px;background:#ecebe8;color:var(--ink)}
+.eng.b{background:var(--copper-soft);color:var(--copper-deep)}
+.mlist .mq{color:var(--ink);overflow-wrap:anywhere}
+.mlist .mm{color:var(--muted);font-size:12px}
+.tsum{padding:10px 14px;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--line-soft);display:flex;gap:18px;flex-wrap:wrap}
+.tsum b{color:var(--ink);font-weight:600}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;background:var(--bg-alt);color:var(--ink-soft);white-space:nowrap}
+
+/* ---------- controls ---------- */
+.ctrls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid var(--line-soft)}
+.tabs{display:inline-flex;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.tabs button{border:0;background:#fff;padding:6px 14px;font-size:13px;font-weight:400;color:var(--ink-soft)}
+.tabs button+button{border-left:1px solid var(--line)}
+.tabs button[aria-selected="true"]{background:var(--ink);color:#fff}
+.tabs.alt button[aria-selected="true"]{background:var(--copper-soft);color:var(--copper-deep);font-weight:500}
+.filter{position:relative;flex:1 1 200px;max-width:320px;margin-left:auto}
+.filter input{width:100%;height:34px;border:1px solid var(--line);border-radius:var(--radius);padding:0 10px 0 32px;font-size:13px;background:#fff}
+.filter input:focus{outline:none;border-color:var(--ink)}
+.filter .svg-i{position:absolute;left:10px;top:9px;color:var(--faint)}
+.more{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted);border-top:1px solid var(--line-soft)}
+.linkb{border:1px solid var(--line);background:#fff;border-radius:var(--radius);padding:5px 12px;font-size:12px;color:var(--ink)}
+.linkb:hover{border-color:var(--ink)}
+.empty{padding:30px 18px;text-align:center;color:var(--muted);margin:0;font-size:13px;line-height:1.6}
+
+/* ---------- charts ---------- */
+.charts{display:grid;grid-template-columns:3fr 2fr;gap:12px}
+.chart-p{padding:14px 16px 10px;min-width:0}
+.chart-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.chart-h h3{font-size:15px;font-weight:500}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--ink-soft);flex-wrap:wrap;margin-bottom:4px}
+.legend i{display:inline-block;width:16px;height:0;border-top:2px solid;vertical-align:middle;margin-right:6px}
+.legend i.dash{border-top-style:dashed}
+.chart{position:relative;min-height:120px}
+.chart svg{display:block;width:100%;height:auto;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.chart .axis{font-size:10.5px;fill:#8a8782;font-family:var(--sans)}
+.chart .grid{stroke:var(--line-soft);stroke-width:1}
+.chart .base{stroke:var(--line);stroke-width:1}
+.tip{position:absolute;top:6px;pointer-events:none;background:var(--dark);color:#fff;font-size:12px;padding:7px 10px;border-radius:var(--radius);white-space:nowrap;box-shadow:0 4px 12px rgba(22,22,22,.18);z-index:2}
+.tip .td{font-weight:500;margin-bottom:3px;color:#e3dfd9}
+.tip .tr{display:flex;gap:12px;justify-content:space-between}
+.tip b{font-weight:500}
+.tip .sw{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .kpis.k4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .status{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .st:nth-child(2){border-right:0}
+  .st:nth-child(-n+2){border-bottom:1px solid var(--line-soft)}
+}
+@media (max-width:860px){
+  .charts,.two,.two.wide-r{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:620px){
+  .top-in{padding-inline:16px;gap:8px}
+  main{padding-inline:16px;padding-block:18px 48px}
+  .brand .ttl{font-size:13px}
+  .top-meta{margin-left:0;width:100%;justify-content:space-between}
+  .upd{white-space:normal}
+  .kpis,.kpis.k4{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .kpi{padding:12px}
+  .kpi .num{font-size:25px}
+  .status{grid-template-columns:minmax(0,1fr)}
+  .st{border-right:0;border-bottom:1px solid var(--line-soft)}
+  .st:last-child{border-bottom:0}
+  .part-h{flex-wrap:wrap;gap:4px 12px}
+  .part-h h2{font-size:21px}
+  .part-h .aside{margin-left:0;text-align:left;flex-basis:100%}
+  .bars.cols{grid-template-columns:minmax(0,1fr)}
+  .card{padding:14px}
+  .filter{max-width:none;margin-left:0;flex-basis:100%}
+  td.q{min-width:180px;max-width:240px}
+  th,td{padding:9px 10px}
+  tr.detail td{padding-left:14px}
+  .login-card{padding:26px 20px 22px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<!-- SVG line-icon sprite (no emoji anywhere) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M7 12h10"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20v-4h-4"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M10 16l-4-4 4-4"/><path d="M6 12h10"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.6A9.7 9.7 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a16 16 0 0 1-3 3.7"/><path d="M6.5 7.3A15.6 15.6 0 0 0 2.5 12s3.5 6.5 9.5 6.5a9.6 9.6 0 0 0 4.2-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5"/><path d="M12 17.2v.3"/></symbol>
+  </defs>
+</svg>
+
+<!-- ===================== SIGN IN ===================== -->
+<div id="login">
+  <form class="login-card" id="loginForm" novalidate autocomplete="on">
+    <span class="logo" aria-label="Office Station"><svg viewBox="0 0 40 40" width="34" height="34"><rect x="1" y="1" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 14h22M9 14v14M20 14v14M31 14v14" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="9" y="25" width="22" height="3" fill="#d27c52"/></svg><span class="lt" aria-hidden="true">Office Station</span></span>
+    <h1>Dashboard</h1>
+    <p class="lede">Authorized users only</p>
+    <div class="field">
+      <label for="user">Username</label>
+      <input id="user" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+    </div>
+    <div class="field">
+      <label for="pw">Password</label>
+      <div class="pw-wrap">
+        <input id="pw" name="password" type="password" autocomplete="current-password" required>
+        <button type="button" class="pw-toggle" id="pwToggle" aria-pressed="false" aria-controls="pw">
+          <svg class="svg-i" id="pwIcon" aria-hidden="true"><use href="#i-eye"/></svg><span id="pwLabel">SHOW</span>
+        </button>
+      </div>
+    </div>
+    <p class="login-err" id="loginErr" role="alert" aria-live="polite"></p>
+    <button type="submit" class="btn-primary" id="loginBtn">Sign in</button>
+    <div class="login-foot">Access is logged.</div>
+  </form>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="top-in">
+      <div class="brand">
+        <span class="logo" aria-label="Office Station"><svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true"><rect x="1" y="1" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 14h22M9 14v14M20 14v14M31 14v14" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="9" y="25" width="22" height="3" fill="#d27c52"/></svg><span class="lt" aria-hidden="true">Office Station</span></span>
+        <span class="ttl">Dashboard</span>
+      </div>
+      <a class="btn-ghost" href="marketplace.html" style="text-decoration:none">Marketplace</a>
+      <div class="top-meta">
+        <span class="upd" id="upd" aria-live="polite"></span>
+        <span class="badge" id="cachedBadge" hidden title="Served from the dashboard cache. Refresh pulls live numbers.">cached</span>
+        <button class="btn-ghost" id="refreshBtn" type="button"><svg class="svg-i" id="refreshIcon" aria-hidden="true"><use href="#i-refresh"/></svg><span id="refreshLabel">Refresh</span></button>
+        <button class="btn-ghost" id="signOutBtn" type="button"><svg class="svg-i" aria-hidden="true"><use href="#i-out"/></svg>Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- request failure (network / server) -->
+    <div class="banner" id="banner" role="alert" hidden><span id="bannerText"></span><button type="button" id="bannerRetry">Try again</button></div>
+    <!-- partial-data problems reported by the API in errors[] -->
+    <div class="banner warn" id="errBanner" role="status" hidden></div>
+    <div class="loading" id="loading">Loading dashboard&hellip;</div>
+
+    <div id="content" hidden>
+
+      <!-- ===== 1. AT A GLANCE ===== -->
+      <section class="part" aria-labelledby="h-glance">
+        <div class="part-h"><span class="no">01</span><h2 id="h-glance">This month at a glance</h2><span class="aside" id="kpiWindow"></span></div>
+        <div class="kpis" id="kpis"></div>
+      </section>
+
+      <!-- ===== 2. WEBSITE TRAFFIC ===== -->
+      <section class="part" aria-labelledby="h-traffic">
+        <div class="part-h"><span class="no">02</span><h2 id="h-traffic">Website traffic</h2><span class="aside">Last 30 days</span></div>
+
+        <div class="sec">
+          <div class="panel chart-p">
+            <div class="chart-h"><h3><span class="kick">Daily</span>Visits and visitors</h3></div>
+            <div class="legend" id="siteLegend"></div>
+            <div class="chart" id="siteChart"></div>
+          </div>
+        </div>
+
+        <div class="sec two">
+          <div class="panel card">
+            <div class="card-h"><h3><span class="kick">Most viewed</span>Top pages</h3></div>
+            <div id="topPages"></div>
+          </div>
+          <div class="panel card">
+            <div class="card-h"><h3><span class="kick">Where visitors came from</span>Traffic sources</h3></div>
+            <div id="sources"></div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-h"><h3><span class="kick">Views by market page</span>Liquidation markets</h3></div>
+          <div class="panel card" id="markets"></div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-h"><h3><span class="kick">Homepage Marketplace card · last 30 days</span>Visitors by market</h3><span class="aside">Counts only; no addresses or individuals stored. Auto = internet-address guess (rough on cell data), GPS = "Use my location", Picked = chose from the menu</span></div>
+          <div class="panel card" id="mpVisitors"></div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-h"><h3><span class="kick">What visitors did</span>Tools &amp; conversions</h3></div>
+          <div class="kpis k4" id="toolKpis"></div>
+        </div>
+
+        <div class="sec two wide-r">
+          <div class="panel card">
+            <div class="card-h"><h3>Leads by type</h3><span class="aside" id="leadsAside"></span></div>
+            <div id="leadTypes"></div>
+          </div>
+          <div class="panel">
+            <div class="card" style="padding-bottom:6px"><div class="card-h" style="margin-bottom:0"><h3>Recent leads</h3><span class="aside">Company details only</span></div></div>
+            <div id="recentLeads"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 3. SEARCH PERFORMANCE ===== -->
+      <section class="part" aria-labelledby="h-search">
+        <div class="part-h"><span class="no">03</span><h2 id="h-search">Search performance</h2><span class="aside" id="searchAside"></span></div>
+
+        <div class="sec charts">
+          <div class="panel chart-p">
+            <div class="chart-h">
+              <h3 id="c1title">Impressions per day</h3>
+              <div class="tabs" role="tablist" aria-label="Chart metric">
+                <button type="button" role="tab" data-metric="impressions" aria-selected="true">Impressions</button>
+                <button type="button" role="tab" data-metric="clicks" aria-selected="false">Clicks</button>
+              </div>
+            </div>
+            <div class="legend" id="c1legend"></div>
+            <div class="chart" id="chart1"></div>
+          </div>
+          <div class="panel chart-p">
+            <div class="chart-h"><h3>Google average position</h3></div>
+            <div class="legend"><span><i style="border-color:#1c1c1c"></i>Position (1 = top of page one)</span></div>
+            <div class="chart" id="chart2"></div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-h"><h3><span class="kick">Priority</span>Target searches</h3><span class="aside">Tap a search to see the exact phrases people used</span></div>
+          <div class="panel">
+            <div class="tw"><table id="targets"></table></div>
+            <div class="tsum" id="tsum"></div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-h"><h3><span class="kick">What people typed and where they landed</span>Queries and pages</h3></div>
+          <div class="panel">
+            <div class="ctrls">
+              <div class="tabs" role="tablist" aria-label="Table view">
+                <button type="button" role="tab" data-view="q" aria-selected="true">Queries</button>
+                <button type="button" role="tab" data-view="p" aria-selected="false">Pages</button>
+              </div>
+              <div class="tabs alt" role="tablist" aria-label="Search engine">
+                <button type="button" role="tab" data-engine="google" aria-selected="true">Google</button>
+                <button type="button" role="tab" data-engine="bing" aria-selected="false">Bing</button>
+              </div>
+              <label class="filter"><svg class="svg-i" aria-hidden="true"><use href="#i-search"/></svg><input type="search" id="tFilter" placeholder="Filter searches" aria-label="Filter searches"></label>
+            </div>
+            <div id="tTable"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 4. SETUP ===== -->
+      <section class="part" aria-labelledby="h-setup">
+        <div class="part-h"><span class="no">04</span><h2 id="h-setup">Search engine setup</h2><span class="aside" id="propAside"></span></div>
+        <div class="panel status" id="status"></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ================= config =================
+  var API = 'https://officestation.netlify.app/.netlify/functions/os-dash';
+  var TK = 'osDashToken';
+  var INK = '#1c1c1c', COPPER = '#d27c52';
+  var LEAD_TYPES = [
+    ['liquidation', 'Liquidation'], ['decommissioning', 'Decommissioning'], ['relocation', 'Relocation'],
+    ['quote', 'Quote request'], ['alerts', 'Auction alerts'], ['seating', 'Seating'],
+    ['partner', 'Partner'], ['marketplace', 'Marketplace'], ['contact', 'Contact']
+  ];
+
+  var state = {
+    token: null, data: null, busy: false, metric: 'impressions',
+    // one combined queries/pages table
+    t: { view: 'q', engine: 'google', sort: 'impressions', dir: -1, filter: '', all: false },
+    open: {}
+  };
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ================= storage (never trusted to exist) =================
+  function sGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function sSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
+  function sDel(k) { try { window.localStorage.removeItem(k); } catch (e) {} }
+
+  // ================= helpers =================
+  // Escape every API-provided string before it touches innerHTML.
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function num(v) { return typeof v === 'number' && isFinite(v) ? v : null; }
+  function arr(v) { return Array.isArray(v) ? v : []; }
+  function fInt(v) { v = num(v); return v == null ? '—' : Math.round(v).toLocaleString('en-US'); }
+  function fPos(v) { v = num(v); return v == null ? '—' : v.toFixed(1); }
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function parseDay(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s || ''));
+    return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+  }
+  // Returns plain text; callers escape when inserting into HTML.
+  function fDay(s, withYear) {
+    var d = parseDay(s); if (!d) return String(s == null ? '' : s);
+    return MON[d.getMonth()] + ' ' + d.getDate() + (withYear ? ', ' + d.getFullYear() : '');
+  }
+  function toDate(v) {
+    if (v == null || v === '') return null;
+    var d = new Date(typeof v === 'string' && /^\d+$/.test(v) ? Number(v) : v);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  function fStamp(v) {
+    var d = toDate(v); if (!d) return v == null ? '' : String(v);
+    var h = d.getHours(), ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+    return MON[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ' at ' + h + ':' + String(d.getMinutes()).padStart(2, '0') + ' ' + ap;
+  }
+  function fShortDate(v) {
+    var d = toDate(v); if (!d) return v == null ? '—' : String(v);
+    return MON[d.getMonth()] + ' ' + d.getDate() + (d.getFullYear() !== new Date().getFullYear() ? ', ' + d.getFullYear() : '');
+  }
+  // "just now", "12 minutes ago", "yesterday", ...
+  function rel(v) {
+    var d = toDate(v); if (!d) return '';
+    var s = (Date.now() - d.getTime()) / 1000;
+    if (s < 45) return 'just now';
+    var m = Math.round(s / 60); if (m < 60) return m + ' minute' + (m === 1 ? '' : 's') + ' ago';
+    var h = Math.round(m / 60); if (h < 24) return h + ' hour' + (h === 1 ? '' : 's') + ' ago';
+    var dd = Math.round(h / 24); if (dd === 1) return 'yesterday';
+    if (dd < 7) return dd + ' days ago';
+    return 'on ' + fShortDate(v);
+  }
+  function icon(id, cls) { return '<svg class="svg-i' + (cls ? ' ' + cls : '') + '" aria-hidden="true"><use href="#' + id + '"/></svg>'; }
+  var TRI_UP = '<svg class="tri" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1.5L9 8.5H1z"/></svg>';
+  var TRI_DN = '<svg class="tri" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 8.5L1 1.5h8z"/></svg>';
+  function shortPath(u) {
+    var s = String(u == null ? '' : u).replace(/^https?:\/\/(www\.)?officestation\.com/i, '');
+    return s || '/';
+  }
+  function emptyP(msg) { return '<p class="empty">' + esc(msg) + '</p>'; }
+
+  // count change: more = good
+  function dCount(cur, prev, hasPrev) {
+    if (!hasPrev) return '<span class="flat">—</span>';
+    cur = num(cur) || 0; prev = num(prev) || 0;
+    var d = Math.round(cur - prev);
+    if (d === 0) return '<span class="flat">±0</span>';
+    return d > 0 ? '<span class="up">' + TRI_UP + '+' + d.toLocaleString('en-US') + '</span>'
+      : '<span class="down">' + TRI_DN + '−' + Math.abs(d).toLocaleString('en-US') + '</span>';
+  }
+  // position change: lower number = better
+  function dPos(cur, prev, hasPrev) {
+    cur = num(cur); prev = num(prev);
+    if (!hasPrev) return '<span class="flat">—</span>';
+    if (cur == null && prev == null) return '<span class="flat">—</span>';
+    if (cur == null) return '<span class="down">dropped</span>';
+    if (prev == null) return '<span class="newb">new</span>';
+    var d = prev - cur;
+    if (Math.abs(d) < 0.05) return '<span class="flat">±0</span>';
+    return d > 0 ? '<span class="up" title="Moved up ' + d.toFixed(1) + ' places">' + TRI_UP + d.toFixed(1) + '</span>'
+      : '<span class="down" title="Moved down ' + Math.abs(d).toFixed(1) + ' places">' + TRI_DN + Math.abs(d).toFixed(1) + '</span>';
+  }
+  // percentage change vs previous period (null prev = nothing to compare)
+  function pct(cur, prev) {
+    if (num(prev) == null) return '<span class="flat">No earlier period to compare</span>';
+    cur = num(cur) || 0;
+    if (!prev) return cur ? '<span class="newb">New this period</span>' : '<span class="flat">No change</span>';
+    var p = (cur - prev) / prev * 100;
+    if (Math.abs(p) < 0.5) return '<span class="flat">±0% vs previous</span>';
+    return (p > 0 ? '<span class="up">' + TRI_UP + '+' : '<span class="down">' + TRI_DN + '−') + Math.abs(p).toFixed(0) + '%</span> <span class="flat">vs previous</span>';
+  }
+
+  // ================= API =================
+  function api(body) {
+    return fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body), mode: 'cors', credentials: 'omit' })
+      .then(function (r) {
+        return r.text().then(function (t) {
+          var j = null; try { j = t ? JSON.parse(t) : null; } catch (e) {}
+          return { status: r.status, json: j || {} };
+        });
+      });
+  }
+
+  // ================= sign in =================
+  function showLogin(msg) {
+    $('app').hidden = true; $('login').hidden = false;
+    $('loginErr').textContent = msg || '';
+    $('pw').value = '';
+    setTimeout(function () { ($('user').value ? $('pw') : $('user')).focus(); }, 0);
+  }
+  $('pwToggle').addEventListener('click', function () {
+    var pw = $('pw'), show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    this.setAttribute('aria-pressed', String(show));
+    $('pwLabel').textContent = show ? 'HIDE' : 'SHOW';
+    $('pwIcon').innerHTML = '<use href="#' + (show ? 'i-eyeoff' : 'i-eye') + '"/>';
+    pw.focus();
+  });
+  $('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var user = $('user').value.trim(), pw = $('pw').value;
+    var err = $('loginErr'), btn = $('loginBtn');
+    if (!user || !pw) { err.textContent = 'Enter your username and password.'; return; }
+    err.textContent = ''; btn.disabled = true; btn.textContent = 'Signing in…';
+    api({ action: 'login', user: user, password: pw }).then(function (r) {
+      if (r.status === 200 && r.json.token) {
+        state.token = r.json.token; sSet(TK, state.token);
+        $('pw').value = '';
+        startApp();
+      } else {
+        err.textContent = r.json.error || (r.status === 401 ? 'That username and password did not match.' : 'Sign-in failed. Please try again.');
+        $('pw').focus(); $('pw').select();
+      }
+    }).catch(function () {
+      err.textContent = 'Could not reach the server. Check your connection and try again.';
+    }).then(function () { btn.disabled = false; btn.textContent = 'Sign in'; });
+  });
+
+  function signOut(msg) {
+    sDel(TK); state.token = null; state.data = null; state.open = {};
+    $('content').hidden = true; $('loading').hidden = false; $('banner').hidden = true; $('errBanner').hidden = true;
+    showLogin(msg);
+  }
+  $('signOutBtn').addEventListener('click', function () { signOut(''); });
+
+  function startApp() {
+    $('login').hidden = true; $('app').hidden = false;
+    load(false);
+  }
+
+  // ================= data =================
+  function setBusy(b) {
+    state.busy = b;
+    $('refreshBtn').disabled = b;
+    $('refreshLabel').textContent = b ? 'Refreshing…' : 'Refresh';
+    $('refreshIcon').classList.toggle('spin', b);
+    $('content').classList.toggle('dim', b && !!state.data);
+    $('main').setAttribute('aria-busy', String(b));
+  }
+  function load(fresh) {
+    if (state.busy) return;
+    setBusy(true); $('banner').hidden = true;
+    if (!state.data) { $('loading').hidden = false; $('content').hidden = true; }
+    var body = { action: 'data', token: state.token };
+    if (fresh) body.fresh = true;
+    api(body).then(function (r) {
+      setBusy(false);
+      if (r.status === 401) { signOut('Your session has ended. Please sign in again.'); return; }
+      if (r.status !== 200) { fail((r.json && r.json.error) || ('The dashboard returned an error (' + r.status + ').')); return; }
+      state.data = r.json;
+      render();
+    }).catch(function () {
+      setBusy(false);
+      fail('Could not reach the server. Check your connection and try again.');
+    });
+  }
+  function fail(msg) {
+    $('bannerText').textContent = msg; $('banner').hidden = false;
+    if (!state.data) $('loading').hidden = true;
+  }
+  $('bannerRetry').addEventListener('click', function () { load(true); });
+  $('refreshBtn').addEventListener('click', function () { load(true); });
+
+  // ================= render (top level) =================
+  function renderUpdated() {
+    var d = state.data || {};
+    var u = $('upd');
+    u.textContent = d.updated ? 'Updated ' + rel(d.updated) : '';
+    u.title = d.updated ? fStamp(d.updated) : '';
+  }
+  setInterval(function () { if (state.data) renderUpdated(); }, 60000);
+
+  function render() {
+    var d = state.data || {};
+    $('loading').hidden = true; $('content').hidden = false;
+    renderUpdated();
+    $('cachedBadge').hidden = !d.cached;
+    renderErrors(d);
+    renderKpis(d);
+    renderSite(d);
+    renderCharts();
+    renderTargets(d);
+    renderTable();
+    renderStatus(d);
+  }
+
+  function renderErrors(d) {
+    var errs = arr(d.errors).filter(function (e) { return e != null && e !== ''; });
+    var b = $('errBanner');
+    b.hidden = !errs.length;
+    b.innerHTML = errs.length ? icon('i-alert') + '<div><b>Some data could not be loaded.</b> Everything else below is current.<ul>' +
+      errs.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('') + '</ul></div>' : '';
+  }
+
+  // ================= 1. KPI tiles =================
+  function wsum(rows) {
+    var i = 0, c = 0, pw = 0, ps = 0;
+    rows.forEach(function (r) {
+      var im = num(r.impressions) || 0;
+      i += im; c += num(r.clicks) || 0;
+      if (num(r.position) != null && im > 0) { ps += r.position * im; pw += im; }
+    });
+    return { impressions: i, clicks: c, position: pw ? ps / pw : null, n: rows.length };
+  }
+  function inRange(rows, a, b) { return rows.filter(function (r) { return r.date >= a && r.date <= b; }); }
+  function isoShift(iso, days) {
+    var d = parseDay(iso); d.setDate(d.getDate() + days);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  // Last 28 days of a daily trend vs the 28 days before it.
+  function lastWindows(trend) {
+    var rows = trend.filter(function (r) { return r && parseDay(r.date); }).sort(function (a, z) { return a.date < z.date ? -1 : 1; });
+    if (!rows.length) return null;
+    var end = rows[rows.length - 1].date, start = isoShift(end, -27);
+    var pEnd = isoShift(start, -1), pStart = isoShift(pEnd, -27);
+    var prev = inRange(rows, pStart, pEnd);
+    return { cur: wsum(inRange(rows, start, end)), prev: prev.length ? wsum(prev) : null, label: fDay(start) + ' – ' + fDay(end) };
+  }
+  // Google: prefer the API's explicit windows, then the trend, then query totals.
+  function googleKpi(g) {
+    if (!g) return null;
+    var trend = arr(g.trend).filter(function (r) { return r && parseDay(r.date); });
+    var w = g.windows;
+    if (trend.length && w && w.cur && w.prev) {
+      var cur = inRange(trend, w.cur.startDate, w.cur.endDate), prev = inRange(trend, w.prev.startDate, w.prev.endDate);
+      if (cur.length) return { cur: wsum(cur), prev: prev.length ? wsum(prev) : null, label: fDay(w.cur.startDate) + ' – ' + fDay(w.cur.endDate) };
+    }
+    if (trend.length) return lastWindows(trend);
+    var qs = arr(g.queries);
+    if (!qs.length) return null;
+    var prevRows = qs.map(function (r) { return { impressions: r.prevImpressions, clicks: r.prevClicks, position: r.prevPosition }; });
+    return { cur: wsum(qs), prev: wsum(prevRows), label: '' };
+  }
+  function bingKpi(b) {
+    if (!b) return null;
+    var t = arr(b.trend);
+    if (t.length) return lastWindows(t);
+    if (arr(b.queries).length) return { cur: wsum(b.queries), prev: null, label: '' };
+    return null;
+  }
+  function tile(label, value, delta, cls, noneMsg) {
+    var none = value === '—';
+    return '<div class="panel kpi' + (cls ? ' ' + cls : '') + '"><div class="lab">' + esc(label) + '</div><div class="num' + (none ? ' none' : '') + '">' + esc(value) +
+      '</div><div class="dl">' + (none ? '<span class="flat">' + esc(noneMsg || 'No data yet') + '</span>' : (delta || '')) + '</div></div>';
+  }
+  function siteTotal(site, key) {
+    var t = site && site.totals;
+    var v = t ? num(t[key]) : null;
+    if (v == null && key === 'leads' && site && site.leads) v = num(site.leads.last30);
+    return v;
+  }
+  function sitePrev(site, key) { return site && site.prevTotals ? num(site.prevTotals[key]) : null; }
+
+  function renderKpis(d) {
+    var site = d.site, h = '';
+    var siteMsg = site ? 'No data yet' : 'Not connected yet';
+    [['Website visits', 'views'], ['Visitors', 'visitors'], ['Leads', 'leads']].forEach(function (k) {
+      var v = siteTotal(site, k[1]);
+      h += tile(k[0], v == null ? '—' : fInt(v), pct(v, sitePrev(site, k[1])), 'site', siteMsg);
+    });
+    var g = googleKpi(d.gsc), gOk = g && g.cur.n;
+    var gMsg = d.setup && d.setup.gscVerified ? 'No data yet' : 'Waiting on Search Console';
+    h += tile('Google clicks', gOk ? fInt(g.cur.clicks) : '—', gOk ? pct(g.cur.clicks, g.prev ? g.prev.clicks : null) : '', '', gMsg);
+    h += tile('Google impressions', gOk ? fInt(g.cur.impressions) : '—', gOk ? pct(g.cur.impressions, g.prev ? g.prev.impressions : null) : '', '', gMsg);
+    var b = bingKpi(d.bing), bOk = b && b.cur.n;
+    h += tile('Bing clicks', bOk ? fInt(b.cur.clicks) : '—', bOk ? pct(b.cur.clicks, b.prev ? b.prev.clicks : null) : '', 'bing', d.bing ? 'No data yet' : 'Not connected yet');
+    $('kpis').innerHTML = h;
+
+    var bits = [];
+    if (site) bits.push('Website: last 30 days');
+    if (gOk && g.label) bits.push('Google: ' + g.label);
+    if (bOk && b.label) bits.push('Bing: ' + b.label);
+    $('kpiWindow').textContent = bits.join(' · ');
+    $('searchAside').textContent = gOk && g.label ? 'Google ' + g.label + ' · Search Console runs 2 to 3 days behind' : '';
+  }
+
+  // ================= 2. Website traffic =================
+  // Horizontal bar list. rows: [{label, value, title?}]
+  function barList(rows, opts) {
+    opts = opts || {};
+    if (!rows.length) return emptyP(opts.empty || 'No data yet.');
+    var max = 0, total = 0;
+    rows.forEach(function (r) { var v = num(r.value) || 0; if (v > max) max = v; total += v; });
+    return '<ol class="bars' + (opts.cls ? ' ' + opts.cls : '') + '">' + rows.map(function (r) {
+      var v = num(r.value) || 0, w = max ? Math.max(v ? 1.5 : 0, v / max * 100) : 0;
+      var share = opts.share && total ? '<small>' + Math.round(v / total * 100) + '%</small>' : '';
+      return '<li' + (v ? '' : ' class="zero"') + '><div class="bl"><span class="bn"' + (r.title ? ' title="' + esc(r.title) + '"' : '') + '>' + esc(r.label) +
+        '</span><span class="bv">' + fInt(v) + share + '</span></div><div class="bt" aria-hidden="true"><i style="width:' + w.toFixed(1) + '%"></i></div></li>';
+    }).join('') + '</ol>';
+  }
+  function byValue(key) { return function (a, z) { return (num(z[key]) || 0) - (num(a[key]) || 0); }; }
+
+  function renderSite(d) {
+    var site = d.site;
+    var off = 'Website analytics are not connected yet.';
+
+    // top pages
+    var pages = arr(site && site.pages).filter(function (r) { return r && r.path != null; }).sort(byValue('views')).slice(0, 10);
+    $('topPages').innerHTML = site ? barList(pages.map(function (r) { return { label: shortPath(r.path), value: r.views, title: r.path }; }), { empty: 'No page views recorded yet.', cls: 'ink' }) : emptyP(off);
+
+    // traffic sources
+    var refs = arr(site && site.referrers).filter(Boolean).sort(byValue('views')).slice(0, 10);
+    $('sources').innerHTML = site ? barList(refs.map(function (r) { return { label: r.source ? r.source : 'Direct / unknown', value: r.views }; }), { empty: 'No traffic sources recorded yet.', share: true }) : emptyP(off);
+
+    // liquidation markets
+    var mk = arr(site && site.markets).filter(function (r) { return r && r.market != null; }).sort(byValue('views'));
+    $('markets').innerHTML = site ? barList(mk.map(function (r) { return { label: r.market, value: r.views }; }), { empty: 'No market page views recorded yet.', cls: 'cols' }) : emptyP(off);
+
+    // Marketplace card: visitors by matched market (auto / GPS / picked)
+    var mv = arr(site && site.marketplaceVisitors).filter(function (r) { return r && r.market; });
+    $('mpVisitors').innerHTML = site ? barList(mv.map(function (r) {
+      var parts = [];
+      if (r.auto) parts.push(fInt(r.auto) + ' auto');
+      if (r.gps) parts.push(fInt(r.gps) + ' GPS');
+      if (r.picked) parts.push(fInt(r.picked) + ' picked');
+      if (r.outside) parts.push(fInt(r.outside) + ' outside U.S.');
+      return { label: r.market + (parts.length ? ' (' + parts.join(', ') + ')' : ''), value: r.total };
+    }), { empty: 'No Marketplace card visitors recorded yet. Counts start with this update.', cls: 'cols' }) : emptyP(off);
+
+    // tool & conversion tiles
+    var days = arr(site && site.days);
+    var taps = null;
+    if (days.length) {
+      taps = 0;
+      days.forEach(function (x) { var e = (x && x.events) || {}; taps += (num(e.tel) || 0) + (num(e.email) || 0); });
+    }
+    var msg = site ? 'No data yet' : 'Not connected yet', h = '';
+    [['Estimator uses', 'estimator'], ['Quote builder uses', 'quote'], ['CTA clicks', 'cta']].forEach(function (k) {
+      var v = siteTotal(site, k[1]);
+      h += tile(k[0], v == null ? '—' : fInt(v), pct(v, sitePrev(site, k[1])), 'site', msg);
+    });
+    h += tile('Phone & email taps', taps == null ? '—' : fInt(taps), '<span class="flat">Last 30 days</span>', 'site', msg);
+    $('toolKpis').innerHTML = h;
+
+    // leads by type (fixed order, zeros shown faint)
+    var L = site && site.leads;
+    var bt = L && L.byType && typeof L.byType === 'object' ? L.byType : null;
+    $('leadTypes').innerHTML = bt ? barList(LEAD_TYPES.map(function (t) { return { label: t[1], value: bt[t[0]] }; }), { share: true })
+      : emptyP(site ? 'No leads recorded yet.' : 'Lead tracking is not connected yet.');
+    var l30 = L ? num(L.last30) : null;
+    $('leadsAside').textContent = l30 != null ? l30.toLocaleString('en-US') + ' in the last 30 days' : '';
+
+    // recent leads: company / city / type / date only (no names or emails)
+    var rec = arr(L && L.recent).filter(Boolean);
+    if (!rec.length) {
+      $('recentLeads').innerHTML = emptyP(site ? 'No leads yet. New inquiries will list here.' : 'Lead tracking is not connected yet.');
+    } else {
+      var typeName = {}; LEAD_TYPES.forEach(function (t) { typeName[t[0]] = t[1]; });
+      var rows = rec.slice().sort(function (a, z) {
+        var at = toDate(a.created), zt = toDate(z.created);
+        return (zt ? zt.getTime() : 0) - (at ? at.getTime() : 0);
+      }).map(function (r) {
+        return '<tr><td class="q" style="min-width:160px">' + (r.company ? esc(r.company) : '<span class="muted">Not given</span>') + '</td>' +
+          '<td style="text-align:left">' + (r.city ? esc(r.city) : '<span class="muted">—</span>') + '</td>' +
+          '<td style="text-align:left"><span class="tag">' + esc(typeName[r.type] || r.type || 'Other') + '</span></td>' +
+          '<td title="' + esc(fStamp(r.created)) + '">' + esc(fShortDate(r.created)) + '</td></tr>';
+      }).join('');
+      $('recentLeads').innerHTML = '<div class="tw"><table><thead><tr><th>Company</th><th style="text-align:left">City</th><th style="text-align:left">Type</th><th>Date</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+    }
+  }
+
+  // ================= charts (inline SVG) =================
+  function niceStep(raw) {
+    if (!(raw > 0)) return 1;
+    var e = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / e;
+    return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * e;
+  }
+  function fAxis(v) {
+    if (Math.abs(v) >= 1000) return (v / 1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k';
+    return String(Math.round(v * 10) / 10);
+  }
+  // cfg: {dates, series:[{name,color,swatch?,area?,dash?,fmt,values}], invert?, label, empty}
+  function drawChart(host, cfg) {
+    host.innerHTML = '';
+    var n = cfg.dates.length, vals = [];
+    cfg.series.forEach(function (s) { s.values.forEach(function (v) { if (num(v) != null) vals.push(v); }); });
+    if (!n || !vals.length) { host.innerHTML = emptyP(cfg.empty); return; }
+    var W = Math.max(260, Math.floor(host.clientWidth || 600)), H = W < 520 ? 210 : 250;
+    var P = { l: 42, r: 14, t: 12, b: 26 }, iw = W - P.l - P.r, ih = H - P.t - P.b;
+    var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals), lo, hi, step;
+    if (cfg.invert) {
+      step = Math.max(1, niceStep((mx - mn) / 4));
+      lo = Math.max(1, Math.floor(mn / step) * step);
+      hi = lo + Math.max(1, Math.ceil((mx - lo) / step)) * step;
+    } else {
+      step = Math.max(1, niceStep(mx / 4)); lo = 0; hi = Math.max(step, Math.ceil(mx / step) * step);
+    }
+    var X = function (i) { return P.l + (n <= 1 ? iw / 2 : i * iw / (n - 1)); };
+    var Y = function (v) { var f = (v - lo) / (hi - lo); return cfg.invert ? P.t + f * ih : P.t + ih - f * ih; };
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="' + esc(cfg.label) + '">';
+    // gridlines + y labels
+    for (var tv = lo; tv <= hi + 1e-9; tv += step) {
+      var y = Y(tv).toFixed(1);
+      s += '<line class="' + (tv === (cfg.invert ? hi : lo) ? 'base' : 'grid') + '" x1="' + P.l + '" x2="' + (W - P.r) + '" y1="' + y + '" y2="' + y + '"/>';
+      s += '<text class="axis" x="' + (P.l - 8) + '" y="' + (+y + 3.5) + '" text-anchor="end">' + fAxis(tv) + '</text>';
+    }
+    // x labels (3 on phones, 6 on wider screens)
+    var nl = Math.min(n, W < 520 ? 3 : 6), seen = {};
+    for (var k = 0; k < nl; k++) {
+      var idx = nl <= 1 ? 0 : Math.round(k * (n - 1) / (nl - 1));
+      if (seen[idx]) continue; seen[idx] = 1;
+      var anchor = nl > 1 && k === 0 ? 'start' : nl > 1 && k === nl - 1 ? 'end' : 'middle';
+      s += '<text class="axis" x="' + X(idx).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="' + anchor + '">' + esc(fDay(cfg.dates[idx])) + '</text>';
+    }
+    // series lines (+ optional area), gaps stay gaps
+    cfg.series.forEach(function (se) {
+      var d = '', pen = false;
+      se.values.forEach(function (v, i) {
+        if (num(v) == null) { pen = false; return; }
+        d += (pen ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true;
+      });
+      if (se.area && d) {
+        var first = se.values.findIndex(function (v) { return num(v) != null; });
+        var lastI = n - 1; while (lastI >= 0 && num(se.values[lastI]) == null) lastI--;
+        if (se.values.slice(first, lastI + 1).every(function (v) { return num(v) != null; }) && lastI > first) {
+          s += '<path d="' + d + 'L' + X(lastI).toFixed(1) + ' ' + (P.t + ih) + 'L' + X(first).toFixed(1) + ' ' + (P.t + ih) + 'Z" fill="' + se.color + '" fill-opacity=".09"/>';
+        }
+      }
+      s += '<path d="' + d + '" fill="none" stroke="' + se.color + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"' + (se.dash ? ' stroke-dasharray="5 4"' : '') + '/>';
+      se.values.forEach(function (v, i) {
+        if (num(v) == null) return;
+        if (num(se.values[i - 1]) == null && num(se.values[i + 1]) == null) s += '<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(v).toFixed(1) + '" r="2.6" fill="' + se.color + '"/>';
+      });
+    });
+    // hover crosshair + dots + hit area
+    s += '<line class="xh" x1="0" x2="0" y1="' + P.t + '" y2="' + (P.t + ih) + '" stroke="#161616" stroke-opacity=".3" stroke-width="1" visibility="hidden"/>';
+    cfg.series.forEach(function (se, j) { s += '<circle data-dot="' + j + '" r="4" fill="#fff" stroke="' + se.color + '" stroke-width="2" visibility="hidden"/>'; });
+    s += '<rect x="' + P.l + '" y="0" width="' + iw + '" height="' + H + '" fill="transparent"/></svg>';
+    host.innerHTML = s + '<div class="tip" hidden></div>';
+
+    var svg = host.querySelector('svg'), xh = svg.querySelector('.xh'), tip = host.querySelector('.tip');
+    var dots = svg.querySelectorAll('[data-dot]');
+    function hide() { xh.setAttribute('visibility', 'hidden'); dots.forEach(function (c) { c.setAttribute('visibility', 'hidden'); }); tip.hidden = true; }
+    function move(ev) {
+      var r = svg.getBoundingClientRect(); if (!r.width) return;
+      var scale = r.width / W, x = (ev.clientX - r.left) / scale;
+      if (x < P.l - 10 || x > W - P.r + 10) { hide(); return; }
+      var i = n <= 1 ? 0 : Math.round((x - P.l) / iw * (n - 1));
+      i = Math.max(0, Math.min(n - 1, i));
+      var cx = X(i);
+      xh.setAttribute('x1', cx); xh.setAttribute('x2', cx); xh.setAttribute('visibility', 'visible');
+      var rows = '';
+      cfg.series.forEach(function (se, j) {
+        var v = se.values[i], dot = dots[j];
+        if (num(v) == null) dot.setAttribute('visibility', 'hidden');
+        else { dot.setAttribute('cx', cx); dot.setAttribute('cy', Y(v)); dot.setAttribute('visibility', 'visible'); }
+        rows += '<div class="tr"><span><span class="sw" style="background:' + (se.swatch || se.color) + '"></span>' + esc(se.name) + '</span><b>' + (num(v) == null ? '—' : se.fmt(v)) + '</b></div>';
+      });
+      tip.innerHTML = '<div class="td">' + esc(fDay(cfg.dates[i], true)) + '</div>' + rows;
+      tip.hidden = false;
+      var tw = tip.offsetWidth, px = cx * scale, hw = host.clientWidth;
+      var left = px + 12 + tw > hw ? px - 12 - tw : px + 12;
+      tip.style.left = Math.max(0, left) + 'px';
+    }
+    svg.addEventListener('pointermove', move);
+    svg.addEventListener('pointerdown', move);
+    svg.addEventListener('pointerleave', function (ev) { if (ev.pointerType !== 'touch') hide(); });
+    svg.addEventListener('pointercancel', hide);
+  }
+
+  function renderCharts() {
+    var d = state.data || {};
+
+    // --- website visits + visitors ---
+    var days = arr(d.site && d.site.days).filter(function (r) { return r && parseDay(r.date); })
+      .sort(function (a, z) { return a.date < z.date ? -1 : 1; });
+    var siteSeries = days.length ? [
+      { name: 'Visits', color: COPPER, area: true, fmt: fInt, values: days.map(function (r) { return num(r.views); }) },
+      { name: 'Visitors', color: INK, swatch: '#cfcac3', dash: true, fmt: fInt, values: days.map(function (r) { return num(r.visitors); }) }
+    ] : [];
+    $('siteLegend').innerHTML = siteSeries.map(function (s) { return '<span><i class="' + (s.dash ? 'dash' : '') + '" style="border-color:' + s.color + '"></i>' + esc(s.name) + '</span>'; }).join('');
+    drawChart($('siteChart'), {
+      dates: days.map(function (r) { return String(r.date).slice(0, 10); }), series: siteSeries, label: 'Website visits and visitors per day',
+      empty: d.site ? 'No visits recorded yet. The chart fills in as the site reports traffic.' : 'Website analytics are not connected yet.'
+    });
+
+    // --- Google + Bing impressions/clicks ---
+    var gt = arr(d.gsc && d.gsc.trend).filter(function (r) { return r && parseDay(r.date); });
+    var bt = arr(d.bing && d.bing.trend).filter(function (r) { return r && parseDay(r.date); });
+    var set = {}, gm = {}, bm = {};
+    gt.forEach(function (r) { var k = String(r.date).slice(0, 10); set[k] = 1; gm[k] = r; });
+    bt.forEach(function (r) { var k = String(r.date).slice(0, 10); set[k] = 1; bm[k] = r; });
+    var dates = Object.keys(set).sort();
+    var m = state.metric, label = m === 'clicks' ? 'Clicks' : 'Impressions';
+    $('c1title').textContent = label + ' per day';
+    var series = [];
+    if (gt.length) series.push({ name: 'Google', color: INK, swatch: '#cfcac3', area: true, fmt: fInt, values: dates.map(function (k) { return gm[k] ? num(gm[k][m]) : null; }) });
+    if (bt.length) series.push({ name: 'Bing', color: COPPER, dash: true, fmt: fInt, values: dates.map(function (k) { return bm[k] ? num(bm[k][m]) : null; }) });
+    $('c1legend').innerHTML = series.map(function (s) { return '<span><i class="' + (s.dash ? 'dash' : '') + '" style="border-color:' + s.color + '"></i>' + esc(s.name) + '</span>'; }).join('');
+    drawChart($('chart1'), { dates: dates, series: series, label: label + ' per day',
+      empty: 'No search data yet. This fills in once Google or Bing starts reporting impressions (Search Console runs 2 to 3 days behind).' });
+
+    // --- Google average position (lower is better, so the axis is inverted) ---
+    var gd = Object.keys(gm).sort();
+    drawChart($('chart2'), {
+      dates: gd, invert: true, label: 'Google average position per day',
+      series: [{ name: 'Avg position', color: INK, swatch: '#cfcac3', fmt: fPos, values: gd.map(function (k) { return num(gm[k].position); }) }],
+      empty: d.setup && d.setup.gscVerified ? 'Google has not reported a position yet.' : 'Waiting on Search Console access. Average position appears once Google is connected.'
+    });
+  }
+  document.querySelectorAll('[data-metric]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      state.metric = b.getAttribute('data-metric');
+      document.querySelectorAll('[data-metric]').forEach(function (x) { x.setAttribute('aria-selected', String(x === b)); });
+      renderCharts();
+    });
+  });
+  // charts are drawn at real pixel width, so redraw when the width changes
+  var rt = null, lastW = window.innerWidth;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () { if (state.data && window.innerWidth !== lastW) { lastW = window.innerWidth; renderCharts(); } }, 150);
+  });
+
+  // ================= 3. Target searches =================
+  function posCell(e, hasPrev) {
+    if (!e) return '<td class="muted">—</td><td class="muted">—</td>';
+    var best = num(e.best) != null && num(e.position) != null && Math.abs(e.best - e.position) >= 0.05 ? '<span class="best">best ' + fPos(e.best) + '</span>' : '';
+    // Under 10 impressions the "position" is one or two searches (often a nearby or personalized user), not a rank you can reproduce.
+    var thin = num(e.impressions) != null && e.impressions < 10;
+    var pos = num(e.position) == null ? '<span class="muted">—</span>' : '<span class="pos"' + (thin ? ' style="color:var(--muted)"' : '') + '>' + fPos(e.position) + '</span> ' + (hasPrev && !thin ? dPos(e.position, e.prevPosition, true) : '');
+    if (thin && num(e.position) != null) best = '<span class="best">from ' + fInt(e.impressions) + (e.impressions === 1 ? ' search' : ' searches') + ', not a stable rank yet</span>';
+    return '<td>' + pos + best + '</td><td>' + fInt(e.impressions) + '</td>';
+  }
+  function renderTargets(d) {
+    var t = arr(d.targets).filter(Boolean);
+    var head = '<thead><tr><th>Search</th><th>Google position</th><th>Google impr.</th><th>Bing position</th><th>Bing impr.</th></tr></thead>';
+    if (!t.length) {
+      $('targets').innerHTML = head + '<tbody><tr><td colspan="5" class="empty">No target searches configured yet.</td></tr></tbody>';
+      $('tsum').innerHTML = ''; $('tsum').hidden = true; return;
+    }
+    $('tsum').hidden = false;
+    var groups = [], by = {};
+    t.forEach(function (row, i) {
+      var g = row.group || 'Other';
+      if (!by[g]) { by[g] = []; groups.push(g); }
+      by[g].push({ row: row, i: i });
+    });
+    var body = '<tbody>', gCount = 0, bCount = 0, top10 = 0;
+    groups.forEach(function (g) {
+      body += '<tr class="grp"><th colspan="5">' + esc(g) + '</th></tr>';
+      by[g].forEach(function (o) {
+        var r = o.row, open = !!state.open[o.i];
+        if (r.google && num(r.google.position) != null) { gCount++; if (r.google.position <= 10 && r.google.impressions >= 10) top10++; }
+        if (r.bing && num(r.bing.position) != null) bCount++;
+        body += '<tr class="tgt"><td class="q"><button type="button" class="exp" data-t="' + o.i + '" aria-expanded="' + open + '">' +
+          icon('i-chev', 'chev') + '<span class="qt">' + esc(r.q) + '</span></button></td>';
+        if (!r.google && !r.bing) body += '<td colspan="4" class="ns">Not showing yet</td>';
+        else body += posCell(r.google, true) + posCell(r.bing, !!(r.bing && r.bing.prevPosition != null));
+        body += '</tr>';
+        if (open) {
+          var m = arr(r.matches).filter(Boolean);
+          body += '<tr class="detail"><td colspan="5">' + (m.length ? '<ul class="mlist">' + m.map(function (x) {
+            var bing = x.engine === 'bing';
+            return '<li><span class="eng' + (bing ? ' b' : '') + '">' + (bing ? 'Bing' : 'Google') + '</span><span class="mq">' + esc(x.query) +
+              '</span><span class="mm">position ' + fPos(x.position) + ' · ' + fInt(x.impressions) + ' impr.</span></li>';
+          }).join('') + '</ul>' : '<span class="muted" style="position:sticky;left:14px">No matching search phrases recorded yet.</span>') + '</td></tr>';
+        }
+      });
+    });
+    $('targets').innerHTML = head + body + '</tbody>';
+    $('tsum').innerHTML = '<span><b>' + gCount + '</b> of ' + t.length + ' showing on Google</span><span><b>' + top10 + '</b> on page one</span><span><b>' + bCount + '</b> of ' + t.length + ' showing on Bing</span>';
+  }
+  $('targets').addEventListener('click', function (e) {
+    var b = e.target.closest('.exp'); if (!b) return;
+    var i = b.getAttribute('data-t');
+    state.open[i] = !state.open[i];
+    renderTargets(state.data || {});
+    var again = $('targets').querySelector('.exp[data-t="' + i + '"]'); if (again) again.focus();
+  });
+
+  // ================= 3. Queries / pages table =================
+  var COLS = [
+    { key: 'impressions', label: 'Impressions', def: -1 },
+    { key: 'clicks', label: 'Clicks', def: -1 },
+    { key: 'position', label: 'Position', def: 1 }
+  ];
+  function renderTable() {
+    var st = state.t, d = state.data || {};
+    var isPages = st.view === 'p', field = isPages ? 'pages' : 'queries', noun = isPages ? 'pages' : 'searches';
+    var src = st.engine === 'google' ? d.gsc : d.bing;
+    var host = $('tTable');
+    var eng = st.engine === 'google' ? 'Google' : 'Bing';
+    if (!src || !Array.isArray(src[field])) {
+      host.innerHTML = emptyP(st.engine === 'google'
+        ? (d.setup && d.setup.gscVerified ? 'Google has not returned any ' + noun + ' yet.' : 'Waiting on Search Console access. Google ' + noun + ' will list here once it is connected.')
+        : (d.bing ? 'Bing has not returned any ' + noun + ' yet.' : 'Bing Webmaster Tools is not connected yet.'));
+      return;
+    }
+    var rows = src[field].filter(function (r) { return r && r.key != null; });
+    var hasPrev = rows.some(function (r) { return 'prevImpressions' in r || 'prevPosition' in r; });
+    var f = st.filter.trim().toLowerCase();
+    var shown = rows.filter(function (r) { return !f || (isPages ? shortPath(r.key) : String(r.key)).toLowerCase().indexOf(f) !== -1; });
+    shown.sort(function (a, z) {
+      var av = num(a[st.sort]), zv = num(z[st.sort]);
+      if (st.sort === 'position') { if (av == null && zv == null) return 0; if (av == null) return 1; if (zv == null) return -1; }
+      av = av || 0; zv = zv || 0;
+      return av === zv ? (num(z.impressions) || 0) - (num(a.impressions) || 0) : (av - zv) * st.dir;
+    });
+    var total = shown.length, list = st.all ? shown : shown.slice(0, 50);
+    var th = '<thead><tr><th>' + (isPages ? 'Page' : 'Search') + '</th>';
+    COLS.forEach(function (c) {
+      var on = st.sort === c.key;
+      th += '<th aria-sort="' + (on ? (st.dir < 0 ? 'descending' : 'ascending') : 'none') + '"><button type="button" class="sortb' + (on ? ' on' : '') + '" data-sort="' + c.key + '">' +
+        c.label + '<span class="ar" aria-hidden="true">' + (on ? (st.dir < 0 ? '▼' : '▲') : '▼') + '</span></button></th>';
+      if (hasPrev) th += '<th class="sub">Change</th>';
+    });
+    th += '</tr></thead>';
+    var colspan = hasPrev ? 7 : 4, body = '<tbody>';
+    if (!rows.length) body += '<tr><td colspan="' + colspan + '" class="empty">' + eng + ' has not reported any ' + noun + ' yet.</td></tr>';
+    else if (!list.length) body += '<tr><td colspan="' + colspan + '" class="empty">Nothing matches “' + esc(st.filter) + '”.</td></tr>';
+    list.forEach(function (r) {
+      var label = isPages ? shortPath(r.key) : r.key;
+      body += '<tr><td class="q"' + (isPages ? ' title="' + esc(r.key) + '"' : '') + '>' + esc(label) + '</td>' +
+        '<td>' + fInt(r.impressions) + '</td>' + (hasPrev ? '<td>' + dCount(r.impressions, r.prevImpressions, true) + '</td>' : '') +
+        '<td>' + fInt(r.clicks) + '</td>' + (hasPrev ? '<td>' + dCount(r.clicks, r.prevClicks, true) + '</td>' : '') +
+        '<td>' + (num(r.position) == null ? '<span class="muted">—</span>' : '<span class="pos">' + fPos(r.position) + '</span>') + '</td>' +
+        (hasPrev ? '<td>' + dPos(r.position, r.prevPosition, true) + '</td>' : '') + '</tr>';
+    });
+    body += '</tbody>';
+    var more = '<div class="more"><span>' + (total ? 'Showing ' + list.length.toLocaleString('en-US') + ' of ' + total.toLocaleString('en-US') + (f ? ' matching' : '') : '') +
+      (hasPrev && total ? ' · change vs previous period' : '') + '</span>' +
+      (total > 50 ? '<button type="button" class="linkb" data-more="1">' + (st.all ? 'Show top 50' : 'Show all ' + total.toLocaleString('en-US')) + '</button>' : '') + '</div>';
+    host.innerHTML = '<div class="tw"><table>' + th + body + '</table></div>' + more;
+  }
+  $('tTable').addEventListener('click', function (e) {
+    var st = state.t;
+    var sb = e.target.closest('.sortb');
+    if (sb) {
+      var key = sb.getAttribute('data-sort');
+      if (st.sort === key) st.dir = -st.dir;
+      else { st.sort = key; st.dir = COLS.filter(function (c) { return c.key === key; })[0].def; }
+      renderTable();
+      var again = $('tTable').querySelector('.sortb[data-sort="' + key + '"]'); if (again) again.focus();
+      return;
+    }
+    if (e.target.closest('[data-more]')) { st.all = !st.all; renderTable(); }
+  });
+  function selectIn(attr, btn) {
+    document.querySelectorAll('[' + attr + ']').forEach(function (x) { x.setAttribute('aria-selected', String(x === btn)); });
+  }
+  document.querySelectorAll('[data-view]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-view');
+      if (state.t.view === v) return;
+      state.t.view = v; state.t.all = false; state.t.filter = '';
+      var inp = $('tFilter'), ph = v === 'p' ? 'Filter pages' : 'Filter searches';
+      inp.value = ''; inp.placeholder = ph; inp.setAttribute('aria-label', ph);
+      selectIn('data-view', b);
+      renderTable();
+    });
+  });
+  document.querySelectorAll('[data-engine]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      state.t.engine = b.getAttribute('data-engine'); state.t.all = false;
+      selectIn('data-engine', b);
+      renderTable();
+    });
+  });
+  $('tFilter').addEventListener('input', function () { state.t.filter = this.value; renderTable(); });
+
+  // ================= 4. Setup status =================
+  function stRow(kind, label, val, note) {
+    var ic = kind === 'ok' ? 'i-check' : kind === 'wait' ? 'i-clock' : 'i-minus';
+    return '<div class="st ' + kind + '"><span class="ic">' + icon(ic) + '</span><div style="min-width:0"><div class="lab">' + esc(label) +
+      '</div><div class="val">' + esc(val) + '</div>' + (note ? '<div class="note">' + esc(note) + '</div>' : '') + '</div></div>';
+  }
+  function renderStatus(d) {
+    var s = d.setup || {}, h = '';
+
+    // Google Search Console
+    if (s.gscVerified) {
+      var sms = arr(d.gsc && d.gsc.sitemaps).filter(Boolean), note = 'Rankings and search data update daily.';
+      if (sms.length) {
+        var sm = sms[0], errs = (num(sm.errors) || 0), warns = (num(sm.warnings) || 0);
+        note = sm.lastDownloaded ? 'Google last read the sitemap ' + rel(sm.lastDownloaded) + '.' : 'Sitemap submitted to Google.';
+        if (errs || warns) note += ' ' + errs + ' error' + (errs === 1 ? '' : 's') + ', ' + warns + ' warning' + (warns === 1 ? '' : 's') + ' reported.';
+      }
+      h += stRow('ok', 'Google Search Console', 'Connected', note);
+    } else {
+      h += stRow('wait', 'Google Search Console', 'Waiting on Search Console access', 'Google clicks, impressions and rankings fill in automatically once access is granted.');
+    }
+
+    // Bing Webmaster Tools
+    h += s.bingVerified
+      ? stRow('ok', 'Bing Webmaster Tools', 'Verified', 'Bing search data is flowing in.')
+      : stRow('wait', 'Bing Webmaster Tools', 'Not verified yet', 'Bing numbers appear once the site is verified in Bing Webmaster Tools.');
+
+    // Sitemap
+    var n = num(s.sitemapUrls);
+    h += n != null
+      ? stRow(n > 0 ? 'ok' : 'off', 'Sitemap URLs', n.toLocaleString('en-US') + ' page' + (n === 1 ? '' : 's') + ' listed',
+          n > 0 ? 'The list of pages search engines are told to crawl.' : 'The sitemap is empty, so search engines have no page list to crawl.')
+      : stRow('off', 'Sitemap URLs', 'Could not be read', 'The sitemap did not load. Search engines use it to find every page.');
+
+    // IndexNow
+    var inx = s.indexnow || {};
+    if (inx.lastSubmitted) {
+      var u = num(inx.urls);
+      h += stRow('ok', 'IndexNow', 'Last sent ' + rel(inx.lastSubmitted), (u != null ? u.toLocaleString('en-US') + ' URL' + (u === 1 ? '' : 's') + ' submitted. ' : '') + 'Tells Bing and others about new or changed pages right away.');
+    } else {
+      h += stRow('off', 'IndexNow', 'Not submitted yet', 'IndexNow instantly tells Bing and other engines when pages change. Nothing has been sent so far.');
+    }
+
+    $('status').innerHTML = h;
+    $('propAside').textContent = d.property ? String(d.property).replace(/^sc-domain:/, '') : '';
+  }
+
+  // ================= boot =================
+  state.token = sGet(TK);
+  if (state.token) startApp(); else showLogin('');
+})();
+</script>
+</body>
+</html>
